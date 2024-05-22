@@ -1,0 +1,48 @@
+/* General Styles */
+body {
+    font-family: sans-serif;
+    margin: 0;
+  }
+  
+  header {
+    background-color: #f0f0f0;
+    padding: 1rem;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav li {
+    display: inline;
+    margin-right: 1rem;
+  }
+  
+  /* Book Grid Styles */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  /* Placeholder Styles */
+  .book-cover { /* Placeholder for book cover image */
+    height: 250px;
+    background-color: #ddd;
+  }
+/* ... (Previous styles for header, navigation, book-grid) ... */
+
+/* Filter Section (browse.html) */
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+/* Account Info (account.html) */
+.account-info, .current-loans, .reservation-history {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+  
