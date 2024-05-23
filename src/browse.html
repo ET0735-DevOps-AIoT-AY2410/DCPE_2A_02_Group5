@@ -4,9 +4,9 @@
     <title>Browse Books</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="gradient-container">
     <header>
-        <h1>My Library</h1>
+        <h1>The Library</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
@@ -14,18 +14,43 @@
                 <li><a href="account.html">My Account</a></li>
             </ul>
         </nav>
+        <input type="text" id="searchInput" placeholder="Search for books...">
     </header>
 
     <main>
         <h2>Browse Books</h2>
-        <div class="filter-section">
-            </div>
 
-        <div class="book-grid">
+        <div class="filter-section">
+            <label for="genre">Genre:</label>
+            <select id="genreFilter">
+                <option value="">All Genres</option>
+            </select>
+
+            <label for="author">Author:</label>
+            <input type="text" id="authorFilter">
+
+            <label for="availability">Availability:</label>
+            <select id="availabilityFilter">
+                <option value="">All Branches</option>
+            </select>
+        </div>
+
+        <div class="book-grid" id="bookGrid">
             </div>
     </main>
 
+    <div id="book-detail" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="detail-title"></h2>
+            <img id="detail-cover" src="" alt="Book Cover">
+            <p id="detail-author"></p>
+            <p id="detail-description"></p>
+            <p id="detail-availability"></p>
+        </div>
+    </div>
+
     <footer>
         </footer>
-</body>
+    <script src="script.js"></script> </body>
 </html>

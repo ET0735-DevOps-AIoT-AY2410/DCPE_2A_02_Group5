@@ -1,48 +1,156 @@
 /* General Styles */
-body {
-    font-family: sans-serif;
-    margin: 0;
-  }
-  
-  header {
-    background-color:pink;
-    padding: 1rem;
-  }
-  
-  nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  nav li {
-    display: inline;
-    margin-right: 1rem;
-  }
-  
-  /* Book Grid Styles */
-  .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-  
-  /* Placeholder Styles */
-  .book-cover { /* Placeholder for book cover image */
-    height: 250px;
-    background-color: #ddd;
-  }
-/* ... (Previous styles for header, navigation, book-grid) ... */
+body.gradient-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  line-height: 1.6;
+  background: linear-gradient(to bottom,#fad0c4 0%, #a8edea 100%);
+  min-height: 100vh;
+}
 
-/* Filter Section (browse.html) */
+header {
+  
+  
+  padding: 1rem 0;
+  text-align: center;
+}
+
+h1 {
+  color: #333 ;
+  margin: 0.5rem 0;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav li {
+  display: inline;
+  margin-right: 2rem;
+}
+
+nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffcc00;
+}
+
+main {
+  padding: 2rem;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Search Bar */
+input[type="text"] {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  width: 300px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Book Grid */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.book-item {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.book-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.book-cover {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.book-details {
+  padding: 1rem;
+}
+
+/* Filter Section */
 .filter-section {
-    margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
-/* Account Info (account.html) */
+/* Account Styles */
 .account-info, .current-loans, .reservation-history {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  padding: 1.5rem;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
-  
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem 0;  
+  color: white;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  width: 60%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#detail-cover {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px;
+  border-radius: 5px;
+}
