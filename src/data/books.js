@@ -45,7 +45,7 @@ const books = [
         author: "Mojang AB",
         cover: "data/book_covers/Redstone_Handbook.jpg",  
         description: "Minecraft: Redstone Handbook is an official guidebook that delves into the intricate world of redstone, a versatile in-game resource used for building complex contraptions and mechanisms. It teaches players how to harness the power of redstone to create automatic doors, intricate circuits, hidden traps, and even simple computers within the Minecraft universe.",
-        genres: ["Non-Fiction","Instructional Guide"],
+        genres: ["Non-Fiction","Guide"],
         availability: ["Main Branch", "North Branch","South Branch","East Branch","West Branch"]
     },
     {
@@ -53,7 +53,7 @@ const books = [
         author: "Mojang AB",
         cover: "data/book_covers/Beginner's_Handbook.jpg",  
         description: "Minecraft: Beginners Guide is an official guidebook offering essential tips and strategies for thriving in the Minecraft world. It covers everything from basic survival skills like gathering resources, building shelters, and crafting tools to advanced techniques for farming, exploring, combatting hostile mobs, and navigating different biomes. The guide aims to help players of all levels master the challenges of survival in the blocky universe of Minecraft.",
-        genres: ["Non-Fiction","Instructional Guide"],
+        genres: ["Non-Fiction","Guide"],
         availability: ["Main Branch", "North Branch", "West Branch"]
     },
     {
@@ -61,7 +61,7 @@ const books = [
         author: "Mojang AB",
         cover: "data/book_covers/Construction_Handbook.jpg",  
         description: "Minecraft: Construction Handbook is an official guidebook that provides players with creative inspiration and practical tips for building impressive structures in the Minecraft world. It covers a wide range of construction projects, from simple houses and farms to elaborate castles and underwater cities. The handbook includes detailed instructions, step-by-step diagrams, and valuable advice on choosing materials, planning layouts, and incorporating redstone mechanisms. Whether you're a beginner builder or a seasoned architect, this handbook will help you unleash your creativity and build amazing creations in Minecraft.",
-        genres: ["Non-Fiction","Instructional Guide"],
+        genres: ["Non-Fiction","Guide"],
         availability: ["Main Branch", "North Branch","South Branch"]
     },
     {
@@ -69,7 +69,7 @@ const books = [
         author: "Mojang AB",
         cover: "data/book_covers/Combat_Handbook.jpg",  
         description: "Synopsis: Minecraft: Combat Handbook is an official guidebook that equips players with the knowledge and skills needed to survive and thrive in the dangerous world of Minecraft. It covers a wide range of combat-related topics.",
-        genres: ["Non-Fiction","Instructional Guide"],
+        genres: ["Non-Fiction","Guide"],
         availability: ["South Branch", "West Branch"]
     },
     {
@@ -77,7 +77,7 @@ const books = [
         author: "Daniel Kahneman",
         cover: "data/book_covers/TFTS.jpg",  
         description: "Thinking, Fast and Slow explores the two systems that drive the way we think and make decisions: System 1 is fast, intuitive, and emotional; System 2 is slower, more deliberative, and more logical. Kahneman reveals the biases and flaws in our intuitive thinking, showing how these can lead to irrational choices. He offers practical insights on how to recognize and overcome these biases, leading to better decision-making in our personal and professional lives.",
-        genres: ["Non-Fiction","Psychology","Behavioral Economics"],
+        genres: ["Non-Fiction","Psychology"],
         availability: ["Main Branch", "West Branch"]
     },
     {
@@ -85,12 +85,12 @@ const books = [
         author: "Thomas Erikson",
         cover: "data/book_covers/Idiots.jpg",  
         description: "Surrounded by Idiots introduces a model of four distinct personality types based on colors (Red, Yellow, Green, and Blue), each with different communication styles, motivations, and behaviors. The book provides insights and practical tips on how to identify these types in others and adjust your communication style accordingly to improve interactions in both personal and professional relationships.",
-        genres: ["Non-Fiction","Self-Help","Communication"],
+        genres: ["Non-Fiction","Self-Help"],
         availability: ["West Branch", "South Branch"]
     },
     {
         title: "The Subtle Art of Not Giving a Fuck",
-        author: "mark Manson",
+        author: "Mark Manson",
         cover: "data/book_covers/No_Fucks_Given.jpg",  
         description: "The Subtle Art of Not Giving a F*ck challenges traditional self-help advice and encourages readers to embrace their limitations and imperfections. It argues that true happiness comes not from chasing positive experiences, but from choosing what to care about and accepting life's inevitable struggles. Through humorous anecdotes and blunt honesty, Manson offers a refreshing perspective on finding meaning and fulfillment in a world that constantly tells us to strive for more.",
         genres: ["Non-Fiction","Self-Help"],
@@ -101,111 +101,31 @@ const books = [
         author: "Hector Garcia and Francesc Miralles",
         cover: "data/book_covers/Ikigai.jpg",  
         description: "Ikigai explores the Japanese concept of 'ikigai', a term often translated as 'reason for being' or 'reason to get up in the morning'. The book delves into the lifestyle and philosophy of centenarians in Okinawa, Japan, known for their longevity and happiness. It uncovers the secrets to their fulfilling lives, highlighting the importance of finding purpose, staying active, nourishing social connections, and embracing simple joys. Ikigai offers practical tips and insights on how to discover and cultivate your own ikigai to lead a more meaningful and fulfilling life.",
-        genres: ["Non-Fiction","Self-Help","Personal Development"],
+        genres: ["Non-Fiction","Self-Help"],
         availability: ["x Branch", "x Branch"]
     },
     {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
+        title: "The Art Of War",
+        author: "Sun Tzu",
+        cover: "data/book_covers/AOW.jpg",  
+        description: "The Art of War is an ancient Chinese treatise on military strategy and tactics. It emphasizes the importance of knowing oneself and one's enemy, using deception and cunning to gain advantage, and winning wars through careful planning and positioning rather than brute force. Its teachings have been influential in military, business, and personal development contexts for centuries.",
+        genres: ["Non-Fiction","Guide","Self-Help"],
+        availability: ["Main Branch", "North Branch"]
     },
     {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-    {
-        title: "x",
-        author: "x",
-        cover: "data/book_covers/x.jpg",  
-        description: "x",
-        genres: ["x","x"],
-        availability: ["x Branch", "x Branch"]
-    },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        title: "The Death Note",
+        author: "Shinigami",
+        cover: "data/book_covers/Death_Note.jpg",  
+        description: `1. The human whose name is written in this note shall die.
+        2. This note will not take effect unless the writer has the person's face in their mind when writing his/her name.
+        3. If the cause of death is written within 40 seconds of writing the person's name, it will happen.
+        4. After writing the cause of death, details of the death should be written in the next 6 minutes and 40 seconds.
+        5. This note shall become the property of the human world, once it touches the ground of (arrives in) the human world.
+        6. The owner of the note can recognize the image and voice of the original owner, i.e., a god of death.
+        7. The human who uses this note can neither go to Heaven nor Hell.`,
+        genres: ["Mystery","Thriller"],
+        availability: ["Unavailable"]
+    }
 
 ];
 
