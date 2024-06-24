@@ -8,8 +8,6 @@ body.gradient-container {
 }
 
 header {
-  
-  
   padding: 1rem 0;
   text-align: center;
 }
@@ -59,6 +57,7 @@ input[type="text"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+
 /* Book Grid */
 .book-grid {
   display: grid;
@@ -89,10 +88,12 @@ input[type="text"] {
   padding: 1rem;
 }
 
+
 /* Filter Section */
 .filter-section {
   margin-bottom: 2rem;
 }
+
 
 /* Account Styles */
 .account-info, .current-loans, .reservation-history {
@@ -103,12 +104,57 @@ input[type="text"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.login-form {
+  border: 1px solid #ddd;
+  padding: 1.5rem;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  margin: 2rem auto;
+}
+
+.login-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  margin-bottom: 0.5rem;
+}
+
+.login-form input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.login-form button {
+  padding: 0.5rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #555;
+}
+
+.login-form #login-message {
+  margin-top: 1rem;
+  color: red;
+  text-align: center;
+}
 /* Footer */
 footer {
   text-align: center;
   padding: 1rem 0;  
   color: white;
 }
+
 
 /* Modal Styles */
 .modal {

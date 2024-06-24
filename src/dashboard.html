@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="gradient-container">
+    <header>
+        <h1>User Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="browse.html">Browse</a></li>
+                <li><a href="account.html">My Account</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Welcome, <span id="username"></span></h2>
+        <div class="current-loans">
+            <h3>Current Loans</h3>
+            <ul id="loans-list"></ul>
+        </div>
+
+        <div class="outstanding-fines">
+            <h3>Outstanding Fines</h3>
+            <p id="fines-amount"></p>
+        </div>
+    </main>
+
+    <footer>
+        <script type="module" src="script.js"></script>
+    </footer>
+</body>
+</html>
