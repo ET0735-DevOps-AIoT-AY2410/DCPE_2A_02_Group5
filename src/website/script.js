@@ -1,5 +1,5 @@
 // script.js
-import books from './data/books.js';
+import books from '../data/books.js';
 //import users from './data/users.js';
 
 const bookGrid = document.querySelector('.book-grid');
