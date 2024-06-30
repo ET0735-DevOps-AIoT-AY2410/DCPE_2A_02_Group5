@@ -1,6 +1,5 @@
 // script.js
 import books from '../data/books.js';
-//import users from './data/users.js';
 
 const bookGrid = document.querySelector('.book-grid');
 const bookDetailModal = document.getElementById('book-detail');
@@ -16,26 +15,16 @@ const accountInfo = document.getElementById('account-info');
 const currentLoans = document.getElementById('current-loans');
 const reservationHistory = document.getElementById('reservation-history');
 
-// Hardcoded user accounts (for demonstration purposes)
-const users = {
-    'user': {
-        username: 'user',
-        password: 'password',
-        profile: {
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-        },
-        loans: ['Book 1', 'Book 2'],
-        reservations: ['Book 3', 'Book 4']
-    }
-};
 
 
 
 // Function to display books in the grid
 function displayBooks(books) {
+
     bookGrid.innerHTML = ''; // Clear the grid
+
     books.forEach(book => {
+
         const bookItem = document.createElement('div');
         bookItem.classList.add('book-item');
         bookItem.innerHTML = `
@@ -51,7 +40,6 @@ function displayBooks(books) {
         bookItem.addEventListener('click', () => {
             displayBookDetail(book);
         });
-
         bookGrid.appendChild(bookItem);
     });
 }
@@ -59,15 +47,17 @@ function displayBooks(books) {
 
 // Function to display book details in the modal
 function displayBookDetail(book) {
+
     document.getElementById('detail-title').textContent = book.title;
     document.getElementById('detail-cover').src = book.cover;
     document.getElementById('detail-author').textContent = "By " + book.author;
     document.getElementById('detail-description').textContent = book.description;
     document.getElementById('detail-availability').textContent = "Available at: " + book.availability.join(', ');
-    
+  
     bookDetailModal.style.display = 'block';
 }
 
+// Function to make filters work
 function populateFilterOptions() {
     const genres = new Set();
     const availabilities = new Set();
@@ -126,57 +116,4 @@ availabilityFilter.addEventListener('change', filterBooks);
 document.addEventListener('DOMContentLoaded', () => {
     displayBooks(books);
     populateFilterOptions();
-});
-
-
-// Handle login form submission
-if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const username = e.target.username.value;
-        const password = e.target.password.value;
-
-        const user = users[username];
-
-        // Simple authentication logic (for demonstration purposes)
-        if (user && user.password === password) {
-            loginMessage.textContent = 'Login successful!';
-            loginForm.style.display = 'none';s
-            accountInfo.style.display = 'block';
-            currentLoans.style.display = 'block';
-            reservationHistory.style.display = 'block';
-
-            // Display user profile information
-            accountInfo.innerHTML = `<h3>Profile</h3><p>Name: ${user.profile.name}</p><p>Email: ${user.profile.email}</p>`;
-            
-            // Display current loans
-            currentLoans.innerHTML = `<h3>Current Loans</h3><ul>${user.loans.map(loan => `<li>${loan}</li>`).join('')}</ul>`;
-
-            // Display reservation history
-            reservationHistory.innerHTML = `<h3>Reservation History</h3><ul>${user.reservations.map(reservation => `<li>${reservation}</li>`).join('')}</ul>`;
-
-            // Redirect to dashboard
-            window.location.href = 'dashboard.html';
-        } else {
-            loginMessage.textContent = 'Invalid username or password. Please try again.';
-        }
-    });
-}
-
-// Handle dashboard display
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.endsWith('dashboard.html')) {
-        const username = 'user'; // Replace this with logic to get the logged-in user
-        const user = users[username];
-
-        if (user) {
-            document.getElementById('username').textContent = user.profile.name;
-
-            // Display current loans
-            document.getElementById('loans-list').innerHTML = user.loans.map(loan => `<li>${loan}</li>`).join('');
-
-            // Display outstanding fines
-            document.getElementById('fines-amount').textContent = `Outstanding Fines: $${user.fines.toFixed(2)}`;
-        }
-    }
 });
