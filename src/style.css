@@ -8,8 +8,6 @@ body.gradient-container {
 }
 
 header {
-  
-  
   padding: 1rem 0;
   text-align: center;
 }
@@ -59,6 +57,7 @@ input[type="text"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+
 /* Book Grid */
 .book-grid {
   display: grid;
@@ -89,10 +88,12 @@ input[type="text"] {
   padding: 1rem;
 }
 
+
 /* Filter Section */
 .filter-section {
   margin-bottom: 2rem;
 }
+
 
 /* Account Styles */
 .account-info, .current-loans, .reservation-history {
@@ -103,12 +104,14 @@ input[type="text"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+
 /* Footer */
 footer {
   text-align: center;
   padding: 1rem 0;  
   color: white;
 }
+
 
 /* Modal Styles */
 .modal {

@@ -11,7 +11,6 @@
         <h1>My Library</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
                 <li><a href="browse.html">Browse</a></li>
                 <li><a href="#">My Account</a></li>
             </ul>
@@ -20,22 +19,23 @@
 
     <main>
         <h2>My Account</h2>
-        <div class="account-info">
-            <h3>Profile</h3>
-            </div>
+        <div class="login-form" id="login-form">
+            <h3>Login</h3>
+            <form id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p id="login-message"></p>
+        </div>
 
-        <div class="current-loans">
-            <h3>Current Loans</h3>
-            </div>
-
-        <div class="reservation-history">
-            <h3>Reservation History</h3>
-            
-            </div>
+        </div>
     </main>
 
     <footer>
         <script type="module" src="script.js"></script>
-        </footer>
+    </footer>
 </body>
 </html>
