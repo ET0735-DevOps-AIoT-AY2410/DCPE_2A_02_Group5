@@ -103,7 +103,7 @@ const books = [
         description: "Ikigai explores the Japanese concept of 'ikigai', a term often translated as 'reason for being' or 'reason to get up in the morning'. The book delves into the lifestyle and philosophy of centenarians in Okinawa, Japan, known for their longevity and happiness. It uncovers the secrets to their fulfilling lives, highlighting the importance of finding purpose, staying active, nourishing social connections, and embracing simple joys. Ikigai offers practical tips and insights on how to discover and cultivate your own ikigai to lead a more meaningful and fulfilling life.",
 
         genres: ["Non-Fiction","Self-Help"],
-        availability: ["x Branch", "x Branch"]
+        availability: ["Main Branch", "West Branch"]
     },
     {
         title: "The Art Of War",

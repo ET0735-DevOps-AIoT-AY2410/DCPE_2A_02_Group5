@@ -1,4 +1,4 @@
-// script.js
+// browse.js
 import books from '../data/books.js';
 
 const bookGrid = document.querySelector('.book-grid');
@@ -8,14 +8,6 @@ const closeButton = document.querySelector('.close-button');
 const genreFilter = document.getElementById('genreFilter');
 const authorFilter = document.getElementById('authorFilter');
 const availabilityFilter = document.getElementById('availabilityFilter');
-
-const loginForm = document.getElementById('loginForm');
-const loginMessage = document.getElementById('login-message');
-const accountInfo = document.getElementById('account-info');
-const currentLoans = document.getElementById('current-loans');
-const reservationHistory = document.getElementById('reservation-history');
-
-
 
 
 // Function to display books in the grid
