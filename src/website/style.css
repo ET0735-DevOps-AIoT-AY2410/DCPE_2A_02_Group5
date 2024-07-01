@@ -7,6 +7,30 @@ body.gradient-container {
   min-height: 100vh;
 }
 
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
 header {
   padding: 1rem 0;
   text-align: center;
@@ -57,6 +81,13 @@ input[type="text"] {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+input[type="password"] {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  width: 300px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
 
 /* Book Grid */
 .book-grid {
@@ -95,16 +126,6 @@ input[type="text"] {
 }
 
 
-/* Account Styles */
-.account-info, .current-loans, .reservation-history {
-  border: 1px solid #ddd;
-  padding: 1.5rem;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-
 /* Footer */
 footer {
   text-align: center;
@@ -135,6 +156,21 @@ footer {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Button Styles */
+
+.form-group button {
+  padding: 10px 15px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.form-group button:hover {
+  background-color: #0056b3;
+}
+
 
 .close-button {
   color: #aaa;

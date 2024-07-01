@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Reservation System</title>
+    <title>Library Sign In</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
-<body class="gradient-container">
-    <div>
-        <h2>Reserve a Book</h2>
-        <form id="reservationForm">
+<body  class="gradient-container">
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
             <div class="form-group">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" required>
+                <label for="user">Name:</label>
+                <input type="text" id="user" name="user" required>
             </div>
             <div class="form-group">
                 <label for="identity">Admin number:</label>
                 <input type="text" id="identity" name="identity" required>
             </div>
-
             <div class="form-group">
-                <button type="button" id="signIn" onClick="passInfo()">Sign In</button> 
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="Sign-In">Sign In</button>
+            </div>
+            <div class="form-group">
+                <a style="font-size: 12px" href="createAcc.html">Create a new account</a>
             </div>
         </form>
     </div>
 
-    <script src="login.js"></script>
-
+    <script src="index.js"></script>
+    
 </body>
 </html>
