@@ -1,17 +1,26 @@
-function passInfo() {
-    var name = document.getElementById('name').value;
-    var identity = document.getElementById('identity').value;
-    
-    if (name === "" || identity === "") {
-        alert("Please fill out all required fields.");
-        return;
-    }
-    
-    var url = 'browse.html?name=' + encodeURIComponent(name) + '&identity=' + encodeURIComponent(identity);
-    document.location.href = url;
-}
+const ip = 'http://127.0.0.1:5000'
 
-document.getElementById('reservationForm').addEventListener('submit', function(event) {
+document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    passInfo();
+    const identity = document.getElementById('identity').value;
+    const password = document.getElementById('password').value;
+    const user = document.getElementById('user').value;
+
+    fetch(`${ip}/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ identity: identity, password: password, user: user})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to main.html after successful login
+            window.location.href = 'browse.html';
+        } else {
+            alert('Login failed: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 });
