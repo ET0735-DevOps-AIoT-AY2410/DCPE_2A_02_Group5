@@ -30,8 +30,6 @@ const users = {
     }
 };
 
-
-
 // Function to display books in the grid
 function displayBooks(books) {
     bookGrid.innerHTML = ''; // Clear the grid
@@ -46,7 +44,6 @@ function displayBooks(books) {
             </div>
         `;
 
-
         // Event listener to open the modal
         bookItem.addEventListener('click', () => {
             displayBookDetail(book);
@@ -55,7 +52,6 @@ function displayBooks(books) {
         bookGrid.appendChild(bookItem);
     });
 }
-
 
 // Function to display book details in the modal
 function displayBookDetail(book) {
@@ -92,7 +88,6 @@ function populateFilterOptions() {
     });
 }
 
-
 // Filter books based on selected criteria
 function filterBooks() {
     const selectedGenre = genreFilter.value;
@@ -109,25 +104,21 @@ function filterBooks() {
     displayBooks(filteredBooks);
 }
 
-
 // Event listener for closing the modal
 closeButton.addEventListener('click', () => {
     bookDetailModal.style.display = 'none';
 });
-
 
 // Event listeners for filter changes
 genreFilter.addEventListener('change', filterBooks);
 authorFilter.addEventListener('input', filterBooks); // Filter as the user types
 availabilityFilter.addEventListener('change', filterBooks);
 
-
 // Initial display of books once the DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
     displayBooks(books);
     populateFilterOptions();
 });
-
 
 // Handle login form submission
 if (loginForm) {
@@ -141,7 +132,7 @@ if (loginForm) {
         // Simple authentication logic (for demonstration purposes)
         if (user && user.password === password) {
             loginMessage.textContent = 'Login successful!';
-            loginForm.style.display = 'none';s
+            loginForm.style.display = 'none';
             accountInfo.style.display = 'block';
             currentLoans.style.display = 'block';
             reservationHistory.style.display = 'block';
@@ -178,5 +169,28 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display outstanding fines
             document.getElementById('fines-amount').textContent = `Outstanding Fines: $${user.fines.toFixed(2)}`;
         }
+    }
+});
+
+// Handle account form submission and redirect
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle account form submission
+    const accountForm = document.getElementById('accountForm');
+    if (accountForm) {
+        accountForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Handle the form submission logic here
+            // For example, you might want to collect form data and validate it
+            const formData = new FormData(accountForm);
+            const accountData = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                // Add other form fields as necessary
+            };
+
+            // Assume the form submission is successful
+            // Redirect to the dashboard
+            window.location.href = 'dashboard.html';
+        });
     }
 });
