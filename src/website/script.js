@@ -1,6 +1,7 @@
 // script.js
 import books from '../data/books.js';
 
+
 const bookGrid = document.querySelector('.book-grid');
 const bookDetailModal = document.getElementById('book-detail');
 const closeButton = document.querySelector('.close-button');
@@ -9,22 +10,13 @@ const genreFilter = document.getElementById('genreFilter');
 const authorFilter = document.getElementById('authorFilter');
 const availabilityFilter = document.getElementById('availabilityFilter');
 
-const loginForm = document.getElementById('loginForm');
-const loginMessage = document.getElementById('login-message');
-const accountInfo = document.getElementById('account-info');
-const currentLoans = document.getElementById('current-loans');
-const reservationHistory = document.getElementById('reservation-history');
-
 
 
 
 // Function to display books in the grid
 function displayBooks(books) {
-
     bookGrid.innerHTML = ''; // Clear the grid
-
     books.forEach(book => {
-
         const bookItem = document.createElement('div');
         bookItem.classList.add('book-item');
         bookItem.innerHTML = `
@@ -40,6 +32,7 @@ function displayBooks(books) {
         bookItem.addEventListener('click', () => {
             displayBookDetail(book);
         });
+
         bookGrid.appendChild(bookItem);
     });
 }
@@ -47,17 +40,15 @@ function displayBooks(books) {
 
 // Function to display book details in the modal
 function displayBookDetail(book) {
-
     document.getElementById('detail-title').textContent = book.title;
     document.getElementById('detail-cover').src = book.cover;
     document.getElementById('detail-author').textContent = "By " + book.author;
     document.getElementById('detail-description').textContent = book.description;
     document.getElementById('detail-availability').textContent = "Available at: " + book.availability.join(', ');
-  
+    
     bookDetailModal.style.display = 'block';
 }
 
-// Function to make filters work
 function populateFilterOptions() {
     const genres = new Set();
     const availabilities = new Set();
@@ -117,3 +108,4 @@ document.addEventListener('DOMContentLoaded', () => {
     displayBooks(books);
     populateFilterOptions();
 });
+
