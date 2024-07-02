@@ -16,7 +16,7 @@ const ip = 'http://127.0.0.1:5000'
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'index.html';
+                    window.location.href = 'browse.html';
                 } else {
                     alert('Sign Up failed: ' + data.message);
                 }
