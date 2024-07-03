@@ -1,15 +1,17 @@
 // browse.js
 import books from '../data/books.js';
 
-
+//Book Grid const
 const bookGrid = document.querySelector('.book-grid');
 const bookDetailModal = document.getElementById('book-detail');
 const closeButton = document.querySelector('.close-button');
 
+//Filter const
 const genreFilter = document.getElementById('genreFilter');
 const authorFilter = document.getElementById('authorFilter');
 const availabilityFilter = document.getElementById('availabilityFilter');
 
+const ip = 'http://127.0.0.1:5000'
 
 // Function to display books in the grid
 function displayBooks(books) {
@@ -107,3 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
     populateFilterOptions();
 });
 
+
+
+// Logout
+function logout() {
+    fetch(`${ip}/logout`, {
+        method: 'POST',
+    }).then(() => {
+        window.location.href = 'login.html';
+    }).catch(error => console.error('Error during logout:', error));
+}
