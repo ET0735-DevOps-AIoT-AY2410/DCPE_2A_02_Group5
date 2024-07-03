@@ -17,6 +17,80 @@ from hal import hal_usonic as usonic
 from hal import hal_dc_motor as dc_motor
 from hal import hal_accelerometer as accel
 
+Account_Info = {
+    "account_id": "123456",
+    "name": "John Doe",
+    "RFID_Tag": "Place RFID Tag here",   #Need to get the tag id from the reader
+    "account_balance": 150.75,
+    "outstanding_fines": [
+        {
+            "fine_id": "fine001",
+            "amount": 5.00,
+            "reason": "Late return of books",
+            "date_issued": "2024-01-15"
+        }
+    ],
+    "extensions": [
+        {
+            "extension_id": "extension001",
+            "ammount": 18.00,
+            "date_issued": "2024-01-14"
+        }
+    ],
+}
+
+borrow_book=1 #place holder from signal from borrow book code
+return_book=0 #place holder
+
+def read_rfid():
+    RFID_Tag = rfid_reader.SimpleMFRC522()
+    return RFID_Tag
+
+"""if _name_ == '_main_':                           #For Jaslyn to use to get the tag from the RFID
+    RFID_Tag = read_rfid()
+    LCD.lcd_display_string(RFID_Tag,1,0)"""
+
+
+def check_fines(Account_Info,Account_ID):
+    for item in Account_Info:
+        if str(item["account_id"]) == Account_ID:
+            if float(item["Fine"]) > 0:
+                return Fines
+            
+def deduct_fines(Account_Info,Account_ID):
+    for item in Account_Info:
+        if str(item["account_id"]) == Account_ID:
+            New_Balance = New_Balance - item["outstanding_fines"]
+            Account_Info.append(New_Balance)
+        return Account_Info
+    
+def bookborrow():
+    print("book is dispensed, book door is opened")
+
+def bookreturn():
+    print("book is returned, book door is opened")
+
+
+
+if _name_ == '_main_':
+
+    if borrow_book==1:
+        Account_ID = read_rfid()
+        Fines = check_fines(Account_Info)
+        if Fines > 0:
+            Account_Info = deduct_fines(Account_Info)
+            bookborrow()
+
+    elif return_book==1:
+        Account_ID = read_rfid()
+        Fines = check_fines(Account_Info,Account_ID)
+        if Fines > 0:
+            Account_ID = deduct_fines(Account_Info, Account_ID)
+            bookreturn()
+    else:
+        LCD.lcd_display_string("Try Again",1,0)
+
+"""
 #Empty list to store sequence of keypad presses
 shared_keypad_queue = queue.Queue()
 
@@ -185,3 +259,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    """

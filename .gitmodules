@@ -1,3 +1,6 @@
 [submodule "src/hal"]
 	path = src/hal
 	url = https://github.com/ET0735-DevOps-AIoT/hal.git
+[submodule "hal"]
+	path = hal
+	url = https://github.com/ET0735-DevOps-AIoT/hal
