@@ -85,11 +85,12 @@ def signup():
 def reserve():
     if 'identity' not in session:
         return jsonify({'success': False, 'message': 'Not logged in'})
+    print("submit req")
 
     data = request.get_json()
     name = data.get('name')
     identity = session['identity']
-    book_title = data.get('bookTitle')
+    book_title = data.get('detail-title')
     location = data.get('location')
     reserveTime = data.get('reserveTime')
 
