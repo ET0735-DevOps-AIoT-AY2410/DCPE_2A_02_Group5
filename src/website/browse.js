@@ -1,5 +1,5 @@
 // browse.js
-import books from '../data/books.js';
+import books from './data/books.js';
 
 //Book Grid const
 const bookGrid = document.querySelector('.book-grid');
@@ -95,37 +95,6 @@ function filterBooks() {
 closeButton.addEventListener('click', () => {
     bookDetailModal.style.display = 'none';
 });
-
-export function reserve_book(event){
-    console.log("submit req (js)")
-    const formData = {
-        name: document.getElementById('name').innerHTML,
-        identity: document.getElementById('identity').innerHTML,
-        bookTitle: document.getElementById('detail-title').value,
-        location: document.getElementById('location').value,
-        reserveTime: new Date().toISOString()
-    };
-
-    //Public IP below
-    fetch(`${ip}/reserve`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById('confirmationMessage').style.display = 'block';
-            document.getElementById('reservationForm').reset();
-        } else {
-            alert('There was a problem with your reservation. Please try again.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
 
 // Event listeners for filter changes
 genreFilter.addEventListener('change', filterBooks);
