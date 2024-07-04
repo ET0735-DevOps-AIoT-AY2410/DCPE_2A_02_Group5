@@ -13,10 +13,12 @@
             <ul>
                 <li><a href="#">Browse</a></li>
                 <li><a href="account.html">My Account</a></li>
-                <li><a href=login.html onclick="logout()">Logout</a></li>
+                <li><a href="login.html">Logout</a></li>
             </ul>
-        </nav>
+        </nav> 
+        
     </header>
+   
 
     <main>
         <h2>Browse Books</h2>
@@ -54,16 +56,16 @@
             <option value="location2">Location 2</option>
             <option value="location3">Location 3</option>
         </select>
-        <button  id="reserve-button" onclick="reserve_book()">Reserve Book</button>
+        <button  id="reserve-button" onclick="reserved()">Reserve Book</button>
         </div>
     </div>
 
-    <footer>
-        </footer>
-    <script type="module" src="browse.js">
-        import { reserve_book } from "./browse.js";
-        window.reserve_book = reserve_book;
-
+    <footer></footer>
+    <script type="module" src="browse.js"></script>
+    <script>
+        function reserved(){
+        }
     </script>
+     
 </body>
 </html>
