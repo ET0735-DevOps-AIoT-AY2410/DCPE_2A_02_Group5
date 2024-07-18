@@ -75,22 +75,22 @@ def reserve():
         return jsonify({'success': False, 'message': 'Not logged in'})
 
     data = request.get_json()
-    name = data.get('name')
     identity = session['identity']
-    book_title = data.get('bookTitle')
+    bookId = data.get('bookId')
     location = data.get('location')
+    
     reserveTime = data.get('reserveTime')
 
     reserveDate = datetime.fromisoformat(reserveTime.replace('Z', '+00:00')) + timedelta(hours=8)
     dateTime = reserveDate.strftime('%Y-%m-%d %H:%M:%S')
 
-    print(f'Reservation made by {name} ({identity}) for the book "{book_title}" at {location}, {dateTime}')
-    info = name + '&' + identity
+    print(f'Reservation made by {identity} for the book {bookId} and  at {location}, {dateTime}')
+    info = str(identity)
     
     booklist = bookInfo.loadBooks()
 
     if info not in booklist or len(booklist[info]) <= 10:
-        bookInfo.addBook(info, book_title, location, dateTime)
+        bookInfo.addBook(info, id, location, dateTime)
 
     return jsonify({'success': True})
 

@@ -11,6 +11,7 @@ function reserve(){
     alert("reserve")
     const formData = {
         name: document.getElementById('name').innerHTML,
+        bookId: document.getElementById('detail-bookId').textContent,
         identity: document.getElementById('identity').innerHTML,
         bookTitle: document.getElementById('detail-title').textContent,
         location: document.getElementById('location').value,

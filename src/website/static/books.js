@@ -1,38 +1,43 @@
 // books.js
 const books = [
     {
+        bookId: "1",
         title: "To Kill a Mockingbird",
         author: "Harper Lee",
         cover: "https://m.media-amazon.com/images/I/81gepf1eMqL._AC_UF1000,1000_QL80_.jpg",
-        description: "In the racially charged South, Scout Finch narrates her coming-of-age story alongside her brother Jem. Their widowed father, Atticus, is a lawyer defending a black man wrongly accused of assault, exposing the children to the town's deep-rooted prejudices and the importance of compassion and justice.",
+        description: "In the racially charged South, Scout Finch narrates her coming-of-age story alongsbookIde her brother Jem. Their wbookIdowed father, Atticus, is a lawyer defending a black man wrongly accused of assault, exposing the children to the town's deep-rooted prejudices and the importance of compassion and justice.",
         genres: ["Southern Gothic", "Legal Drama"],
         availability: ["Main Branch", "North Branch"]
     },
     {
-        title: "The Hitchhiker's Guide to the Galaxy",
+        bookId: "2",
+        title: "The Hitchhiker's GubookIde to the Galaxy",
         author: "Douglas Adams",
         cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNad4-0rUdke9G4vbX9sK9KFnWd5Ul0W3Jgw&s", 
-        description: "Earthman Arthur Dent narrowly escapes the destruction of his home planet by hitching a ride on a Vogon spaceship with his friend Ford Prefect, who reveals himself to be an alien researcher for the titular Hitchhiker's Guide to the Galaxy. They embark on a zany interstellar journey aboard the stolen spaceship Heart of Gold, encountering eccentric characters like two-headed galactic president Zaphod Beeblebrox, the depressed robot Marvin, and Trillian, the woman Arthur once tried to pick up at a party. Their adventures lead them to the answer to the ultimate question of life, the universe, and everything, which turns out to be 42, but the question itself remains elusive.", 
+        description: "Earthman Arthur Dent narrowly escapes the destruction of his home planet by hitching a rbookIde on a Vogon spaceship with his friend Ford Prefect, who reveals himself to be an alien researcher for the titular Hitchhiker's GubookIde to the Galaxy. They embark on a zany interstellar journey aboard the stolen spaceship Heart of Gold, encountering eccentric characters like two-headed galactic presbookIdent Zaphod Beeblebrox, the depressed robot Marvin, and Trillian, the woman Arthur once tried to pick up at a party. Their adventures lead them to the answer to the ultimate question of life, the universe, and everything, which turns out to be 42, but the question itself remains elusive.", 
         genres: ["Science Fiction", "Humor"],
         availability: ["Main Branch", "South Branch", "East Branch"]
     },
     {
+        bookId: "3",
         title: "The Great Gatsby",
         author: "F. Scott Fitzgerald",
         cover: "https://cdn.kobo.com/book-images/5addc4c9-fbc1-42d7-a79f-cec7619d4b23/1200/1200/False/the-great-gatsby-a-novel-1.jpg",  
-        description: "In the roaring 1920s, Nick Carraway, a Midwesterner who moves to Long Island, becomes fascinated by his wealthy and enigmatic neighbor, Jay Gatsby. Gatsby throws extravagant parties, hoping to reunite with his lost love, Daisy Buchanan, who is married to the brutish Tom Buchanan. Nick gets drawn into their world of luxury, obsession, and ultimately, tragedy, as Gatsby's pursuit of the American Dream leads to devastating consequences.", 
+        description: "In the roaring 1920s, Nick Carraway, a MbookIdwesterner who moves to Long Island, becomes fascinated by his wealthy and enigmatic neighbor, Jay Gatsby. Gatsby throws extravagant parties, hoping to reunite with his lost love, Daisy Buchanan, who is married to the brutish Tom Buchanan. Nick gets drawn into their world of luxury, obsession, and ultimately, tragedy, as Gatsby's pursuit of the American Dream leads to devastating consequences.", 
         genres: ["Tragedy"],
         availability: ["Main Branch", "East Branch", "West Branch"]
     },
     {
+        bookId: "4",
         title: "Dune",
         author: "Frank herbert",
         cover: "https://m.media-amazon.com/images/I/81nq+ewtkcL._AC_UF1000,1000_QL80_.jpg",  
-        description: "On the desert planet Arrakis, the sole source of the valuable spice melange, young Paul Atreides and his family become embroiled in a treacherous power struggle after being entrusted with the planet's stewardship. Betrayed and left for dead, Paul finds refuge with the native Fremen, eventually embracing his destiny as their messianic leader, Muad'Dib, to avenge his family and reclaim control of Arrakis.",
+        description: "On the desert planet Arrakis, the sole source of the valuable spice melange, young Paul AtrebookIdes and his family become embroiled in a treacherous power struggle after being entrusted with the planet's stewardship. Betrayed and left for dead, Paul finds refuge with the native Fremen, eventually embracing his destiny as their messianic leader, Muad'Dib, to avenge his family and reclaim control of Arrakis.",
         genres: ["Science Fiction"],
         availability: ["Main Branch", "North Branch", "West Branch"]
     },
     {
+        bookId: "5",
         title: "Ready Player One",
         author: "Ernest Cline",
         cover: "https://m.media-amazon.com/images/I/91FGDm7MfIL._AC_UF1000,1000_QL80_.jpg",  
@@ -41,38 +46,43 @@ const books = [
         availability: ["South Branch", "West Branch"]
     },
     {
+        bookId: "6",
         title: "Minecraft Redstone Handbook",
         author: "Mojang AB",
         cover: "https://m.media-amazon.com/images/I/617dLkzb9-L._AC_UF1000,1000_QL80_.jpg",  
-        description: "Minecraft: Redstone Handbook is an official guidebook that delves into the intricate world of redstone, a versatile in-game resource used for building complex contraptions and mechanisms. It teaches players how to harness the power of redstone to create automatic doors, intricate circuits, hidden traps, and even simple computers within the Minecraft universe.",
-        genres: ["Non-Fiction","Guide"],
+        description: "Minecraft: Redstone Handbook is an official gubookIdebook that delves into the intricate world of redstone, a versatile in-game resource used for building complex contraptions and mechanisms. It teaches players how to harness the power of redstone to create automatic doors, intricate circuits, hbookIdden traps, and even simple computers within the Minecraft universe.",
+        genres: ["Non-Fiction","GubookIde"],
         availability: ["Main Branch", "North Branch","South Branch","East Branch","West Branch"]
     },
     {
+        bookId: "7",
         title: "Minecraft Beginners Handbook",
         author: "Mojang AB",
         cover: "https://m.media-amazon.com/images/I/81nbtKexVUL._AC_UF1000,1000_QL80_.jpg",  
-        description: "Minecraft: Beginners Guide is an official guidebook offering essential tips and strategies for thriving in the Minecraft world. It covers everything from basic survival skills like gathering resources, building shelters, and crafting tools to advanced techniques for farming, exploring, combatting hostile mobs, and navigating different biomes. The guide aims to help players of all levels master the challenges of survival in the blocky universe of Minecraft.",
-        genres: ["Non-Fiction","Guide"],
+        description: "Minecraft: Beginners GubookIde is an official gubookIdebook offering essential tips and strategies for thriving in the Minecraft world. It covers everything from basic survival skills like gathering resources, building shelters, and crafting tools to advanced techniques for farming, exploring, combatting hostile mobs, and navigating different biomes. The gubookIde aims to help players of all levels master the challenges of survival in the blocky universe of Minecraft.",
+        genres: ["Non-Fiction","GubookIde"],
         availability: ["Main Branch", "North Branch", "West Branch"]
     },
     {
+        bookId: "8",
         title: "Minecraft Construction Handbook",
         author: "Mojang AB",
         cover: "https://m.media-amazon.com/images/I/612HfenZf0L._AC_UF1000,1000_QL80_.jpg",  
-        description: "Minecraft: Construction Handbook is an official guidebook that provides players with creative inspiration and practical tips for building impressive structures in the Minecraft world. It covers a wide range of construction projects, from simple houses and farms to elaborate castles and underwater cities. The handbook includes detailed instructions, step-by-step diagrams, and valuable advice on choosing materials, planning layouts, and incorporating redstone mechanisms. Whether you're a beginner builder or a seasoned architect, this handbook will help you unleash your creativity and build amazing creations in Minecraft.",
-        genres: ["Non-Fiction","Guide"],
+        description: "Minecraft: Construction Handbook is an official gubookIdebook that provbookIdes players with creative inspiration and practical tips for building impressive structures in the Minecraft world. It covers a wbookIde range of construction projects, from simple houses and farms to elaborate castles and underwater cities. The handbook includes detailed instructions, step-by-step diagrams, and valuable advice on choosing materials, planning layouts, and incorporating redstone mechanisms. Whether you're a beginner builder or a seasoned architect, this handbook will help you unleash your creativity and build amazing creations in Minecraft.",
+        genres: ["Non-Fiction","GubookIde"],
         availability: ["Main Branch", "North Branch","South Branch"]
     },
     {
+        bookId: "9",
         title: "Minecraft Combat Handbook",
         author: "Mojang AB",
         cover: "https://m.media-amazon.com/images/I/61qSsRBSo6L._AC_UF1000,1000_QL80_.jpg",  
-        description: "Synopsis: Minecraft: Combat Handbook is an official guidebook that equips players with the knowledge and skills needed to survive and thrive in the dangerous world of Minecraft. It covers a wide range of combat-related topics.",
-        genres: ["Non-Fiction","Guide"],
+        description: "Synopsis: Minecraft: Combat Handbook is an official gubookIdebook that equips players with the knowledge and skills needed to survive and thrive in the dangerous world of Minecraft. It covers a wbookIde range of combat-related topics.",
+        genres: ["Non-Fiction","GubookIde"],
         availability: ["South Branch", "West Branch"]
     },
     {
+        bookId: "10",
         title: "Thinking Fast Thinking Slow",
         author: "Daniel Kahneman",
         cover: "https://m.media-amazon.com/images/I/61fdrEuPJwL._AC_UF1000,1000_QL80_.jpg",  
@@ -81,14 +91,16 @@ const books = [
         availability: ["Main Branch", "West Branch"]
     },
     {
-        title: "Surrounded by Idiots",
+        bookId: "11",
+        title: "Surrounded by bookIdiots",
         author: "Thomas Erikson",
         cover: "https://bci.kinokuniya.com/jsp/images/book-img/97817/97817850/9781785042188.JPG",  
-        description: "Surrounded by Idiots introduces a model of four distinct personality types based on colors (Red, Yellow, Green, and Blue), each with different communication styles, motivations, and behaviors. The book provides insights and practical tips on how to identify these types in others and adjust your communication style accordingly to improve interactions in both personal and professional relationships.",
+        description: "Surrounded by bookIdiots introduces a model of four distinct personality types based on colors (Red, Yellow, Green, and Blue), each with different communication styles, motivations, and behaviors. The book provbookIdes insights and practical tips on how to bookIdentify these types in others and adjust your communication style accordingly to improve interactions in both personal and professional relationships.",
         genres: ["Non-Fiction","Self-Help"],
         availability: ["West Branch", "South Branch"]
     },
     {
+        bookId: "12",
         title: "The Subtle Art of Not Giving a Fuck",
         author: "Mark Manson",
         cover: "https://m.media-amazon.com/images/I/71QKQ9mwV7L._AC_UF1000,1000_QL80_.jpg",  
@@ -97,6 +109,7 @@ const books = [
         availability: ["Main Branch", "North Branch","South Branch" ,"East Branch"]
     },
     {
+        bookId: "13",
         title: "Ikigai",
         author: "Hector Garcia and Francesc Miralles",
         cover: "https://m.media-amazon.com/images/I/81l3rZK4lnL._AC_UF1000,1000_QL80_.jpg",  
@@ -106,14 +119,16 @@ const books = [
         availability: ["Main Branch", "West Branch"]
     },
     {
+        bookId: "14",
         title: "The Art Of War",
         author: "Sun Tzu",
         cover: "https://jamesclear.com/wp-content/uploads/2015/11/TheArtofWar-by-SunTzu.jpg",  
         description: "The Art of War is an ancient Chinese treatise on military strategy and tactics. It emphasizes the importance of knowing oneself and one's enemy, using deception and cunning to gain advantage, and winning wars through careful planning and positioning rather than brute force. Its teachings have been influential in military, business, and personal development contexts for centuries.",
-        genres: ["Non-Fiction","Guide","Self-Help"],
+        genres: ["Non-Fiction","GubookIde","Self-Help"],
         availability: ["Main Branch", "North Branch"]
     },
     {
+        bookId: "666",
         title: "The Death Note",
         author: "Shinigami",
         cover: "https://m.media-amazon.com/images/I/31r7n1DIUFL._AC_UF1000,1000_QL80_.jpg",  

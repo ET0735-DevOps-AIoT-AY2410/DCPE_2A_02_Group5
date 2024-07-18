@@ -24,6 +24,7 @@ function displayBooks(books) {
             <div class="book-details">
                 <h3>${book.title}</h3>
                 <p>By ${book.author}</p>
+                <p hidden>${book.bookId}</p>
             </div>
         `;
 
@@ -41,11 +42,13 @@ function displayBooks(books) {
 // Function to display book details in the modal
 function displayBookDetail(book) {
     document.getElementById('detail-title').textContent = book.title;
+    document.getElementById('detail-bookId').textContent = book.bookId;
     document.getElementById('detail-cover').src = book.cover;
     document.getElementById('detail-author').textContent = "By " + book.author;
     document.getElementById('detail-description').textContent = book.description;
     document.getElementById('detail-availability').textContent = "Available at: " + book.availability.join(', ');
-    
+     
+
     bookDetailModal.style.display = 'block';
 }
 
