@@ -1,5 +1,5 @@
 // browse.js
-import books from '../data/books.js';
+import books from './data/books.js';
 
 //Book Grid const
 const bookGrid = document.querySelector('.book-grid');
@@ -96,7 +96,6 @@ closeButton.addEventListener('click', () => {
     bookDetailModal.style.display = 'none';
 });
 
-
 // Event listeners for filter changes
 genreFilter.addEventListener('change', filterBooks);
 authorFilter.addEventListener('input', filterBooks); // Filter as the user types
@@ -108,14 +107,3 @@ document.addEventListener('DOMContentLoaded', () => {
     displayBooks(books);
     populateFilterOptions();
 });
-
-
-
-// Logout
-function logout() {
-    fetch(`${ip}/logout`, {
-        method: 'POST',
-    }).then(() => {
-        window.location.href = 'login.html';
-    }).catch(error => console.error('Error during logout:', error));
-}
