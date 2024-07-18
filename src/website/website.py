@@ -1,52 +1,31 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, session
 from flask_cors import CORS
 from datetime import datetime, timedelta
 import logging
+import userInfo
+import bookInfo
 import csv
 import os
+from threading import Thread
+
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
-BASE_URL = 'http://127.0.0.1:5000'
-'''log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)'''
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
-booklist = {}
-session = {}
+app.secret_key = 'super_secret_key'
 
-def load_passwords():
-    passwords = {}
-    file_path = os.path.join(os.path.dirname(__file__), 'passwords.csv')
-    with open(file_path, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            passwords[row['username']] = row['password']
-    return passwords
+passwords = userInfo.load_passwords()
 
-def createAcc(username, password):
-    global passwords
-    file_path = os.path.join(os.path.dirname(__file__), 'passwords.csv')
-    with open(file_path, 'a', newline='') as csvfile:
-        fieldnames = ['username', 'password']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        
-        if csvfile.tell() == 0:
-            writer.writeheader()
-        writer.writerow({'username': username, 'password': password})
-    
-    passwords = load_passwords()
-
-
-passwords = load_passwords()
-
+# Login function
 @app.route('/login', methods=['POST'])
 def login():
-    print('login')
     data = request.get_json()
+    user = data.get('user')
     identity = data.get('identity')
     password = data.get('password')
-    user = data.get('user')
     
     if identity in passwords and passwords[identity] == password:
         session['identity'] = identity
@@ -55,6 +34,8 @@ def login():
     else:
         return jsonify({'success': False, 'message': 'Invalid identity or password'})
 
+
+# Check session cookies
 @app.route('/session', methods=['GET'])
 def get_session():
     if 'identity' in session:
@@ -62,17 +43,18 @@ def get_session():
     else:
         return jsonify({'loggedIn': False})
 
+
+# Logout function
 @app.route('/logout', methods=['POST'])
 def logout():
-    print('logout')
-    print("attempt to log out")
-    session.pop('identity', None)
-    session.pop('name', None)
+    session.clear()
     return jsonify({'success': True})
 
+
+# Create new record
 @app.route('/signup', methods=['POST'])
 def signup():
-    print('signup')
+    global passwords
     data = request.get_json()
     identity = data.get('identity')
     password = data.get('password')
@@ -80,17 +62,17 @@ def signup():
     if identity in passwords:
         return jsonify({'success': False, 'message': 'Admin No. already used'})
     
-    createAcc(identity, password)
+    userInfo.createAcc(identity, password)
+    passwords = userInfo.load_passwords()
     passwords[identity] = password
     return jsonify({'success': True, 'message': 'Account created successfully'})
 
 
+# Create book reservation
 @app.route('/reserve', methods=['POST'])
 def reserve():
-    print('reserve')
     if 'identity' not in session:
         return jsonify({'success': False, 'message': 'Not logged in'})
-    print("submit req")
 
     data = request.get_json()
     name = data.get('name')
@@ -104,21 +86,43 @@ def reserve():
 
     print(f'Reservation made by {name} ({identity}) for the book "{book_title}" at {location}, {dateTime}')
     info = name + '&' + identity
-    booklist.setdefault(info, [])
     
-    if len(booklist[info]) < 10:
-        booklist[info].append([book_title, location, dateTime])
-    else:
-        return jsonify({'success': False, 'message': 'Too many books'})
-    
-    print(booklist)
+    booklist = bookInfo.loadBooks()
 
-    # Respond with a success message
+    if info not in booklist or len(booklist[info]) <= 10:
+        bookInfo.addBook(info, book_title, location, dateTime)
+
     return jsonify({'success': True})
+
+
+
 
 @app.route('/reservations', methods=['GET'])
 def get_reservations():
+    booklist = bookInfo.loadBooks()
     return jsonify(booklist)
+
+'''@app.route('/fines', methods=['GET'])
+def get_fines():
+    getReserve('http://192.168.50.170:5001')
+    fineList = userInfo.loadFine()
+    return jsonify(fineList)'''
+
+@app.route('/')
+def index():
+    return render_template('login.html')
+
+@app.route('/createAcc')
+def createAcc():
+    return render_template('createAcc.html')
+
+@app.route('/browse')
+def browse():
+    return render_template('browse.html')
+
+@app.route('/account')
+def account():
+    return render_template('account.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

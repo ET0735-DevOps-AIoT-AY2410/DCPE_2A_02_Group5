@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Session data:', data);
         if (!data.loggedIn) {
             console.log('User not logged in, redirecting to login page');
-            window.location.href = 'login.html';
+            window.location.href = '/';
         } 
         else {
             document.getElementById('name').innerHTML = data.name;

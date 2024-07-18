@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Reservation System</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 </head>
 <body class="gradient-container">
     <header>
         <h1>My Library</h1>
         <nav>
             <ul>
-                <li><a href="browse.html">Browse</a></li>
+                <li><a href="{{ url_for('browse') }}">Browse</a></li>
                 <li><a href="#">My Account</a></li>
-                <li><a href=login.html onclick="logout()">Logout</a></li>
+                <li><a href="{{ url_for('login') }}" onclick="logout()">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -27,8 +28,8 @@
     </main>
 
     <footer>
-        <script src="account.js"></script>
-        <script src="functions.js"></script>
+        <script src="{{ url_for('static', filename='account.js') }}"></script>
+        <script src="{{ url_for('static', filename='functions.js') }}"></script>
     </footer>
 </body>
 </html>

@@ -3,7 +3,7 @@ function logout() {
     fetch('http://127.0.0.1:5000/logout', {
         method: 'POST',
     }).then(() => {
-        window.location.href = 'login.html';
+        window.location.href = '/';
     }).catch(error => console.error('Error during logout:', error));
 }
 
