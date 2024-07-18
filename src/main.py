@@ -3,6 +3,7 @@ from threading import Thread
 import queue
 import csv
 import requests
+import getBooklist
 
 from datetime import datetime, date, timedelta
 
@@ -47,6 +48,25 @@ url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
 Loan_Info_csv = fetch_csv_data(url)
 Loan_Info = csv_to_dict(csv_data)
 """
+
+def getList():
+    global bookList
+    global borrowList
+    checkChangeReserve = {}
+    checkChangeBorrow = {}
+    while(True):
+        data = getBooklist.getReserve()
+        bookList = data[0]
+        borrowList = data[1]
+
+        if bookList != checkChangeReserve:
+            print('reserve: ', bookList)
+            checkChangeReserve = bookList
+        if borrowList != checkChangeBorrow:
+            print('borrow: ',borrowList)
+            checkChangeBorrow = borrowList
+
+
 
 # Converting CSVs to dictionaries we can use
 Account_Info = 'passwords.csv'

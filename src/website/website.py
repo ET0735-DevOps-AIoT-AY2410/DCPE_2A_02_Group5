@@ -102,12 +102,6 @@ def get_reservations():
     booklist = bookInfo.loadBooks()
     return jsonify(booklist)
 
-'''@app.route('/fines', methods=['GET'])
-def get_fines():
-    getReserve('http://192.168.50.170:5001')
-    fineList = userInfo.loadFine()
-    return jsonify(fineList)'''
-
 @app.route('/')
 def index():
     return render_template('login.html')
