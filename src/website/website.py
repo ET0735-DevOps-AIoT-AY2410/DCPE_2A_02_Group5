@@ -90,7 +90,7 @@ def reserve():
     booklist = bookInfo.loadBooks()
 
     if info not in booklist or len(booklist[info]) <= 10:
-        bookInfo.addBook(info, id, location, dateTime)
+        bookInfo.addBook(info, bookId, location, dateTime)
 
     return jsonify({'success': True})
 
