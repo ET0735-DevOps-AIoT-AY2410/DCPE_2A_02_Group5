@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Account Creation</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Library Sign In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="gradient-container">
+<body  class="gradient-container">
     <div class="container">
-        <h2>New Account</h2>
+        <h2>Login</h2>
         <form id="loginForm">
             <div class="form-group">
                 <label for="user">Name:</label>
@@ -23,12 +23,15 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <button type="submit">Create Account</button>
+                <button type="Sign-In">Sign In</button>
+            </div>
+            <div class="form-group">
+                <a style="font-size: 12px" href="{{ url_for('createAcc') }}">Create a new account</a>
             </div>
         </form>
     </div>
 
-    <script src="createAcc.js"></script>
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
     
 </body>
 </html>

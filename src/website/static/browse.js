@@ -1,5 +1,5 @@
 // browse.js
-import books from '../data/books.js';
+import books from './books.js';
 
 //Book Grid const
 const bookGrid = document.querySelector('.book-grid');
@@ -24,6 +24,7 @@ function displayBooks(books) {
             <div class="book-details">
                 <h3>${book.title}</h3>
                 <p>By ${book.author}</p>
+                <p hidden>${book.bookId}</p>
             </div>
         `;
 
@@ -41,11 +42,11 @@ function displayBooks(books) {
 // Function to display book details in the modal
 function displayBookDetail(book) {
     document.getElementById('detail-title').textContent = book.title;
+    document.getElementById('detail-bookId').textContent = book.bookId;
     document.getElementById('detail-cover').src = book.cover;
     document.getElementById('detail-author').textContent = "By " + book.author;
     document.getElementById('detail-description').textContent = book.description;
-    document.getElementById('detail-availability').textContent = "Available at: " + book.availability.join(', ');
-    
+     
     bookDetailModal.style.display = 'block';
 }
 
@@ -55,7 +56,7 @@ function populateFilterOptions() {
 
     books.forEach(book => {
         book.genres.forEach(genre => genres.add(genre));
-        book.availability.forEach(availability => availabilities.add(availability));
+        
     });
 
     genres.forEach(genre => {
@@ -65,12 +66,6 @@ function populateFilterOptions() {
         genreFilter.add(option);
     });
 
-    availabilities.forEach(availability => {
-        const option = document.createElement('option');
-        option.value = availability;
-        option.text = availability;
-        availabilityFilter.add(option);
-    });
 }
 
 
@@ -78,13 +73,11 @@ function populateFilterOptions() {
 function filterBooks() {
     const selectedGenre = genreFilter.value;
     const selectedAuthor = authorFilter.value.toLowerCase();
-    const selectedAvailability = availabilityFilter.value;
 
     const filteredBooks = books.filter(book => {
         const matchesGenre = selectedGenre === '' || book.genres.includes(selectedGenre);
         const matchesAuthor = selectedAuthor === '' || book.author.toLowerCase().includes(selectedAuthor);
-        const matchesAvailability = selectedAvailability === '' || book.availability.includes(selectedAvailability);
-        return matchesGenre && matchesAuthor && matchesAvailability;
+        return matchesGenre && matchesAuthor;
     });
 
     displayBooks(filteredBooks);
@@ -96,11 +89,9 @@ closeButton.addEventListener('click', () => {
     bookDetailModal.style.display = 'none';
 });
 
-
 // Event listeners for filter changes
 genreFilter.addEventListener('change', filterBooks);
 authorFilter.addEventListener('input', filterBooks); // Filter as the user types
-availabilityFilter.addEventListener('change', filterBooks);
 
 
 // Initial display of books once the DOM content is loaded
@@ -108,14 +99,3 @@ document.addEventListener('DOMContentLoaded', () => {
     displayBooks(books);
     populateFilterOptions();
 });
-
-
-
-// Logout
-function logout() {
-    fetch(`${ip}/logout`, {
-        method: 'POST',
-    }).then(() => {
-        window.location.href = 'login.html';
-    }).catch(error => console.error('Error during logout:', error));
-}

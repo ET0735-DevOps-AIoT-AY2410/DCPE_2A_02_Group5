@@ -1,43 +1,43 @@
-import cv2
-import sqlite3
+import time
+from picamera import PiCamera
 from pyzbar.pyzbar import decode
+from PIL import Image
 
-def get_user_by_barcode(barcode):
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute("SELECT name FROM users WHERE barcode=?", (barcode,))
-    user = c.fetchone()
-    conn.close()
-    return user
+def capture_image(camera, file_path):
+    camera.start_preview()
+    # Allow the camera to warm up
+    time.sleep(2)
+    camera.capture(file_path)
+    camera.stop_preview()
+
+def scan_barcode(image_path):
+    image = Image.open(image_path)
+    barcodes = decode(image)
+    for barcode in barcodes:
+        barcode_data = barcode.data.decode('utf-8')
+        barcode_type = barcode.type
+        print(f"Found {barcode_type} barcode: {barcode_data}")
+        return barcode_data
+    return None
 
 def main():
-    cap = cv2.VideoCapture(0)
+    camera = PiCamera()
+    image_path = '/home/pi/barcode.jpg'
     
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            continue
-        
-        barcodes = decode(frame)
-        for barcode in barcodes:
-            barcode_data = barcode.data.decode('utf-8')
-            user = get_user_by_barcode(barcode_data)
-            
-            if user:
-                user_name = user[0]
-                cv2.putText(frame, f"User: {user_name}", (barcode.rect.left, barcode.rect.top - 10), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-            else:
-                cv2.putText(frame, "User not found", (barcode.rect.left, barcode.rect.top - 10), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        
-        cv2.imshow('Barcode Scanner', frame)
-        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
+    print("Preparing to capture image...")
+    capture_image(camera, image_path)
+    
+    print("Scanning for barcodes...")
+    barcode_data = scan_barcode(image_path)
+    
+    if barcode_data:
+        print(f"Barcode data: {barcode_data}")
+        # Here, you can add code to check the barcode data against a database
+        # For demonstration, we'll just print it
+    else:
+        print("No barcode found.")
+    
+    camera.close()
 
 if __name__ == "__main__":
     main()

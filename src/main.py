@@ -1,6 +1,11 @@
 import time
 from threading import Thread
 import queue
+import csv
+import requests
+import getBooklist
+
+from datetime import datetime, date, timedelta
 
 from hal import hal_led as led
 from hal import hal_lcd as LCD
@@ -17,79 +22,187 @@ from hal import hal_usonic as usonic
 from hal import hal_dc_motor as dc_motor
 from hal import hal_accelerometer as accel
 
-Account_Info = {
-    "account_id": "123456",
-    "name": "John Doe",
-    "RFID_Tag": "Place RFID Tag here",   #Need to get the tag id from the reader
-    "account_balance": 150.75,
-    "outstanding_fines": [
-        {
-            "fine_id": "fine001",
-            "amount": 5.00,
-            "reason": "Late return of books",
-            "date_issued": "2024-01-15"
-        }
-    ],
-    "extensions": [
-        {
-            "extension_id": "extension001",
-            "ammount": 18.00,
-            "date_issued": "2024-01-14"
-        }
-    ],
-}
+# Pulling Dictionaries from Docker App
+"""
+response = requests.get(url)
+response.raise_for_status()  # Raise an exception for HTTP errors
+return response.text
 
-borrow_book=1 #place holder from signal from borrow book code
-return_book=0 #place holder
+reader = csv.DictReader(StringIO(csv_str))
+return [row for row in reader]
 
+url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
+AccountInfo_csv = fetch_csv_data(url)
+AccountInfo = csv_to_dict(csv_data)
+
+################################################################################
+
+response = requests.get(url)
+response.raise_for_status()  # Raise an exception for HTTP errors
+return response.text
+
+reader = csv.DictReader(StringIO(csv_str))
+return [row for row in reader]
+
+url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
+Loan_Info_csv = fetch_csv_data(url)
+Loan_Info = csv_to_dict(csv_data)
+"""
+
+def getList():
+    global bookList
+    global borrowList
+    checkChangeReserve = {}
+    checkChangeBorrow = {}
+    while(True):
+        data = getBooklist.getReserve()
+        bookList = data[0]
+        borrowList = data[1]
+
+        if bookList != checkChangeReserve:
+            print('reserve: ', bookList)
+            checkChangeReserve = bookList
+        if borrowList != checkChangeBorrow:
+            print('borrow: ',borrowList)
+            checkChangeBorrow = borrowList
+
+
+
+# Converting CSVs to dictionaries we can use
+Account_Info = 'passwords.csv'
+# Convert CSV dictionary from website into dictionary
+
+with open(Account_Info, mode='r', newline='') as file:
+    csv_reader = csv.DictReader(file)
+    Account_Info = [row for row in csv_reader]
+
+Loan_Info = 'Loaninfo.csv'
+# Convert CSV dictionary for book borrowing information into dictionary
+
+with open(Loan_Info, mode='r', newline='') as file:
+    csv_reader = csv.DictReader(file)
+    Loan_Info = [row for row in csv_reader]
+
+
+################################################################################
+# Function to Read RFID Tag
 def read_rfid():
     RFID_Tag = rfid_reader.SimpleMFRC522()
     return RFID_Tag
 
-"""if _name_ == '_main_':                           #For Jaslyn to use to get the tag from the RFID
-    RFID_Tag = read_rfid()
-    LCD.lcd_display_string(RFID_Tag,1,0)"""
-
-
-def check_fines(Account_Info,Account_ID):
-    for item in Account_Info:
-        if str(item["account_id"]) == Account_ID:
-            if float(item["Fine"]) > 0:
-                return Fines
+# Filters the account information into another dictionary that focuses on the information for the account we are currenlty looking
+# Mainly done to connect the 2 dictionaries for Website and Hardware and also for convenience
+def filter_loan_info(Account_ID):
+    filtered_loan_info = []
+    loan_info = []
+    for item in Loan_Info:
+        if str(item["account_id"]) == str(Account_ID):
+            loan_info = {
+                "account_id": item["account_id"],
+                "name": Account_Info[item["account_id"]]["name"],
+                "account_balance": Account_Info[item["account_id"]]["balance"],
+                "due_date": item["due_date"],
+                "borrow_date": item["borrow_date"]
+            }
+            #loan_info.append(filtered_loan_info)
+            return loan_info
+    #return loan_info # loan_info in small case for the smaller dictionary focusing on one account
+    return None
             
-def deduct_fines(Account_Info,Account_ID):
-    for item in Account_Info:
-        if str(item["account_id"]) == Account_ID:
-            New_Balance = New_Balance - item["outstanding_fines"]
-            Account_Info.append(New_Balance)
-        return Account_Info
-    
-def bookborrow():
-    print("book is dispensed, book door is opened")
-
-def bookreturn():
-    print("book is returned, book door is opened")
-
-
-
-if _name_ == '_main_':
-
-    if borrow_book==1:
-        Account_ID = read_rfid()
-        Fines = check_fines(Account_Info)
-        if Fines > 0:
-            Account_Info = deduct_fines(Account_Info)
-            bookborrow()
-
-    elif return_book==1:
-        Account_ID = read_rfid()
-        Fines = check_fines(Account_Info,Account_ID)
-        if Fines > 0:
-            Account_ID = deduct_fines(Account_Info, Account_ID)
-            bookreturn()
+# I'm not super sure if the use of datetime is correct
+# In progress but meant to check if the current date is past the due date
+def check_fines(loan_info):
+    due_date_str = loan_info.get("due_date")
+    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+    current_date = datetime.today()
+    if current_date > due_date:
+        return True
     else:
-        LCD.lcd_display_string("Try Again",1,0)
+        return False
+            
+# Calculates the fines             
+def calculate_fines(loan_info):
+    due_date_str = loan_info.get("due_date")
+    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+    current_date = datetime.today()
+    days_overdue = (current_date - due_date).days
+    fines = days_overdue*0.15
+    LCD.lcd_display_string("Fines due:",1)
+    LCD.lcd_display_string(str(fines),2)
+    return fines
 
+# Deducts the fines from the account's balance
+def deduct_fines(loan_info, fines_due):
+    account_balance = loan_info.get("account_balance")
+    new_balance = account_balance - fines_due
+    LCD.lcd_display_string("New Balance",1)
+    LCD.lcd_display_string(str(new_balance),2)
+    return new_balance
+
+# Checks if the account is available to extend the books for 7 more days. Also ensures that the book hasn't been borrowed for more than 18 days
+def book_extend_viability(loan_info):   
+    borrow_date_str = loan_info.get("borrow_date")
+    borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
+    due_date_str = loan_info.get("due_date")
+    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+    if due_date > borrow_date:
+        if (due_date - borrow_date).days < 18:
+            return True
+    elif borrow_date > due_date:
+        if (borrow_date - due_date).days < 18:
+            return True
+    else:
+        return False
+
+# Extends the due date and also calcualtes the new balance after extending the book's due date
+def book_extend(loan_info):
+    account_balance = loan_info.get("account_balance")
+    new_balance = account_balance - 1.05 # 0.15 * 7 = 1.05
+    due_date_str = loan_info.get("due_date")
+    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+    LCD.lcd_display_string("New Balance",1)
+    LCD.lcd_display_string(str(new_balance),2)
+    new_due_date = due_date + timedelta(days=7)
+    return new_due_date.strftime("%Y-%m-%d"), new_balance
+
+# Updates the new account balance after fine or extension (to main dictionary Loan_Info)
+def update_balance(loan_info,new_balance):
+    loan_info_account_id = loan_info.get("account_id")
+    for item in Loan_Info:
+        if str(item["account_id"]) == loan_info_account_id:
+            Loan_Info["balance"] == new_balance
+
+
+# Updates the new due date after extending the due date (to main dicitonary Loan_Info)
+def update_due_date(loan_info,new_due_date):
+    loan_info_account_id = loan_info.get("account_id")
+    for item in Loan_Info:
+        if str(item["account_id"]) == loan_info_account_id:
+            Loan_Info["due_date"] == new_due_date
+
+
+# Main Function
+def main():
+    RFID = read_rfid()
+    loan_info = filter_loan_info(RFID)
+    if check_fines() == True:
+        fines_due = calculate_fines(loan_info)
+        if (keypad == 1):
+            new_balance = deduct_fines(loan_info, fines_due)
+            update_balance(loan_info, new_balance)
+        if (keypad == 2):
+            if book_extend_viability(loan_info) == True:
+                new_due_date, new_balance = book_extend(loan_info)
+                update_due_date(loan_info,new_due_date) #Changes the new due date
+                update_balance(loan_info, new_balance)
+
+
+if __name__ == '_main_':
+    main()
+
+
+################################################################################
+# RPi Testing Code
 """
 #Empty list to store sequence of keypad presses
 shared_keypad_queue = queue.Queue()
