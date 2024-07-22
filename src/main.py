@@ -50,18 +50,18 @@ Loan_Info = csv_to_dict(csv_data)
 """
 
 def getList():
-    global bookList
+    global reserveList
     global borrowList
     checkChangeReserve = {}
     checkChangeBorrow = {}
     while(True):
         data = getBooklist.getReserve()
-        bookList = data[0]
+        reserveList = data[0]
         borrowList = data[1]
 
-        if bookList != checkChangeReserve:
-            print('reserve: ', bookList)
-            checkChangeReserve = bookList
+        if reserveList != checkChangeReserve:
+            print('reserve: ', reserveList)
+            checkChangeReserve = reserveList
         if borrowList != checkChangeBorrow:
             print('borrow: ',borrowList)
             checkChangeBorrow = borrowList
