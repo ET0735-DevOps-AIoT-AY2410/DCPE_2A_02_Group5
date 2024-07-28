@@ -6,11 +6,11 @@ def getReserve():
     try:
         url = f'{BASE_URL}/reservations'
         response = requests.get(url)
-        bookList = response.json()
+        reserveList = response.json()
     except:
         return [{}, {}]
     
-    return bookList
+    return reserveList
 
 def main():
     print(getReserve())
