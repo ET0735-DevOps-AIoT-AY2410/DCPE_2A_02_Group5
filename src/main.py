@@ -57,7 +57,7 @@ def filter_info(Account_Info, RFID):
                 "book_id": item["bookID"],  
                 "Location": item["location"],
                 "Borrow_Date": item["date"],
-                "RFID": item["RFID"]
+                # "RFID": item["RFID"]
                 #"Account_Balance": item["balance"]
             }
     return account_info
