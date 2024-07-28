@@ -24,16 +24,6 @@ from hal import hal_accelerometer as accel
 from combinecsv import merge_csv, update_csv
 
 def getList():
-<<<<<<< HEAD
-    global bookList
-    global Account_Info
-    checkChangeReserve = {}
-    checkChangeBorrow = {}
-    while(True):
-        Account_Info = getBooklist.getReserve()
-        bookList = Account_Info[0]
-        borrowList = Account_Info[1]
-=======
     global reserveList
     global borrowList
     checkChangeReserve = {}
@@ -42,7 +32,6 @@ def getList():
         data = getBooklist.getReserve()
         reserveList = data[0]
         borrowList = data[1]
->>>>>>> bc398a8a6642842547c233fa95a760e047e31d7d
 
         if reserveList != checkChangeReserve:
             print('reserve: ', reserveList)
