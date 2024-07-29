@@ -49,8 +49,7 @@ def read_rfid():
     if RFID_Tag is None:
         return False
     else:
-        return True
-    
+        return True  
 
 def filter_info(account_id):
     filtered_borrowList = []
@@ -161,9 +160,6 @@ def update_status(filtered_info):
         if str(item["account_id"]) == borrowList_id:
             borrowList["due_date"] == "borrowed"
 
-
-
-
 # Main function for the fine system + RFID
 def fine_system(): 
     global keyvalue
@@ -178,19 +174,31 @@ def fine_system():
             LCD.lcd_display_string("You have Fines due",1)
             LCD.lcd_display_string("Extension Available",2)
             time.sleep(5)
+            LCD.lcd_clear()
             LCD.lcd_display_string("1.Pay Fines",1)
             LCD.lcd_display_string("2.Exit",2)
             time.sleep(2)
+            LCD.lcd_clear()
             LCD.lcd_display_string("3.Extend Loan",1)
             if keyvalue == 1:
-                deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
-                break
+                LCD.lcd_clear()
+                LCD.lcd_display_string("Scan RFID",1)
+                RFID = read_rfid()
+                if RFID == True:
+                    buzzer.turn_on_with_timer(0.5)
+                    deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
+                    break
             if keyvalue == 2:
                 break
             if keyvalue == 3:
-                new_due_date = book_extend(filtered_info,due_date) 
-                update_due_date(filtered_info,new_due_date)
-                deduct_fines(filtered_info, overdue_fines_due,extension_cost=1.05)
+                LCD.lcd_clear()
+                LCD.lcd_display_string("Scan RFID",1)
+                RFID = read_rfid()
+                if RFID == True:
+                    buzzer.turn_on_with_timer(0.5)
+                    new_due_date = book_extend(filtered_info,due_date) 
+                    update_due_date(filtered_info,new_due_date)
+                    deduct_fines(filtered_info, overdue_fines_due,extension_cost=1.05)
     elif fine_status == 1 and book_extend_viability(filtered_info,due_date) == True:
         while True:
                 LCD.lcd_display_string("You have Fines due",1)
@@ -201,36 +209,18 @@ def fine_system():
                 time.sleep(2)
                 LCD.lcd_display_string("3.Extend Loan",1)
                 if keyvalue == 1:
-                    deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
-                    break
+                    LCD.lcd_clear()
+                    LCD.lcd_display_string("Scan RFID",1)
+                    RFID = read_rfid()
+                    if RFID == True:
+                        buzzer.turn_on_with_timer(0.5)
+                        deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
+                        break
                 if keyvalue == 2:
                     break       
     else:
         book_dispensal()
-        update_status()
-
-            
-
-
-    RFID = read_rfid()
-    if RFID == True: 
-        # Deduct Fines
-        overdue_fines_due = calculate_fines(due_date)
-        if keypad == 1:
-            # Continue with the borrow and deduct fines
-            # new_balance = deduct_fines(account_info, overdue_fines_due, extension_cost=0)  
-            deduct_fines(account_info, overdue_fines_due, extension_cost=0)
-        elif keypad == 2:
-            # Choose option to extend book borrow
-            if book_extend_viability(account_info,due_date) == False:
-                # new_balance = deduct_fines(account_info, overdue_fines_due, extension_cost=0) 
-                deduct_fines(account_info, overdue_fines_due, extension_cost=0)
-                # update_balance(Account_Info,account_info,new_balance)  
-            elif book_extend_viability(account_info,due_date) == True:  
-               new_due_date = book_extend(account_info,due_date) 
-               update_due_date(Account_Info,account_info,new_due_date)
-               deduct_fines(account_info, overdue_fines_due,extension_cost=1.05) # Extention for 7 days * 0.15 = 1.05
-               # update_balance(Account_Info,account_info,new_balance)
+        update_status(filtered_info)
 
 def keypad_interrupt():
     global keyvalue
