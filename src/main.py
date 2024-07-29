@@ -46,8 +46,12 @@ def getList():
 # Function to Read RFID Tag
 def read_rfid():
     RFID_Tag = rfid_reader.SimpleMFRC522()
-    return RFID_Tag
-
+    if RFID_Tag is None:
+        return False
+    else:
+        return True
+    
+"""
 def filter_info(Account_Info, RFID):
     account_info = []
     for item in Account_Info:
@@ -61,7 +65,7 @@ def filter_info(Account_Info, RFID):
                 #"Account_Balance": item["balance"]
             }
     return account_info
-            
+"""
 # I'm not super sure if the use of datetime is correct
 # In progress but meant to check if the current date is past the due date
 """
@@ -149,12 +153,13 @@ def update_due_date(Account_Info,account_info,new_due_date):
 def fine_system():
     #Account_Info = merge_csv()
     RFID = read_rfid()
-    account_info = filter_info(Account_Info, RFID)
-    due_date, fine_status = calculate_due_date()
-    if fine_status == 0:
+    # account_info = filter_info(Account_Info, RFID)
+    # due_date, fine_status = calculate_due_date()
+    # if fine_status == 0:
         #Book borrow stuff
-        print ("Borrow Book Approved")
-    elif fine_status ==1:
+        # print ("Borrow Book Approved")
+    #elif fine_status ==1:
+    if RFID == True: 
         # Deduct Fines
         overdue_fines_due = calculate_fines(due_date)
         if keypad == 1:
