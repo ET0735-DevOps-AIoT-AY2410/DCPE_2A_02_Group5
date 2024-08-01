@@ -128,30 +128,31 @@ def check_fines(account_info):
 # Calculates the fines             
 def calculate_due_date(filtered_info):
     today_date = datetime.now().date()
-    results = []
+    due_date = []
+    fine_status = 0
     
     for item in filtered_info:
         borrow_date_str = item["date"]
         borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d %H:%M:%S").date()
-        due_date = borrow_date + timedelta(days=10)
-        
-        if due_date < today_date:
+        due_date_value = borrow_date + timedelta(days=10)
+        due_date = {
+            "bookID": item["bookID"],
+            "due_date": due_date_value,
+            "borrow_date": item["date"]
+        }
+    for item in due_date:
+        if item["due_date"] < item["borrow_date"]:
             fine_status = 1
-        else:
-            fine_status = 0
-        """
-        results.append({
-            "id": item["id"],
-            "bookId": item["bookId"],
-            "due_date": due_date,
-            "fine_status": fine_status
-        })"""
+        
         
     return due_date, fine_status
 
 def calculate_fines(due_date):
+    days_overdue = 0
     today_date = datetime.now().date()
-    days_overdue = (today_date - due_date).days
+    for item in due_date:
+        days_overdue = days_overdue + (today_date - item["due_date"]).days
+        
     fines_due = days_overdue *0.15
     return fines_due
     
@@ -169,14 +170,14 @@ def deduct_fines(account_info, fines_due, extension_cost):
     # return new_balance
 
 # Checks if the account is available to extend the books for 7 more days. Also ensures that the book hasn't been borrowed for more than 18 days
-def book_extend_viability(filtered_info,due_date):   
+def book_extend_viability(due_date):   
     """
     borrow_date_str = loan_info.get("date")
     borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
     due_date_str = loan_info.get("return_date")
     due_date = datetime.strptime(due_date_str, "%Y-%m-%d")"""
-    for item in filtered_info:
-        borrow_date_str = item["date"]
+    for item in due_date:
+        borrow_date_str = item["borrow_date"]
         borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d %H:%M:%S").date()
         if due_date > borrow_date:
             if (due_date - borrow_date).days < 18:
@@ -193,6 +194,8 @@ def book_extend(account_info, due_date):
     new_balance = account_balance - 1.05 # 0.15 * 7 = 1.05
     LCD.lcd_display_string("New Balance",1)
     LCD.lcd_display_string(str(new_balance),2)"""
+    LCD.lcd_display_string("Available",1)
+    LCD.lcd_display_string(str(new_due_date),2)
     new_due_date = due_date + timedelta(days=7)
     # sleep(2)
     LCD.lcd_display_string("New Due Date:",1)
@@ -208,12 +211,12 @@ def update_balance(filtered_info,new_balance):
     #return Account_Info"""
 
 # Updates the new due date after extending the due date (to main dicitonary Loan_Info)
-"""def update_due_date(filtered_reserveList,new_due_date):
+def update_due_date(filtered_reserveList,new_due_date):
     account_info_id = filtered_reserveList.get("account_id")
     for item in borrowList:
         if str(item["account_id"]) == account_info_id:
             borrowList["due_date"] == new_due_date
-    #return Account_Info"""
+    #return Account_Info
 
 def book_dispensal():
     servo.init()
@@ -242,6 +245,11 @@ keypad_queue = queue.Queue()
 
 def key_pressed(key):
     keypad_queue.put(key)
+
+def book_extention(filtered_info, due_date,overdue_fines_due):
+    new_due_date = book_extend(filtered_info,due_date) 
+    update_due_date(filtered_info,new_due_date)
+    deduct_fines(filtered_info, overdue_fines_due,extension_cost=1.05)
 
 # Main function for the fine system + RFID
 def fine_system(): 
@@ -297,7 +305,7 @@ def fine_system():
             while keyvalue not in [1, 2, 3]:
                 keyvalue= keypad_queue.get()
 
-            if keyvalue == 1:
+            if keyvalue == 1:                             # Pay Fines
                 LCD.lcd_clear()
                 LCD.lcd_display_string("Scan RFID",1)
                 RFID = read_rfid()
@@ -313,20 +321,19 @@ def fine_system():
                     buzzer_beep()
                     deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
                     break
-            if keyvalue == 2:
+            if keyvalue == 2:                              # Exit
                 
                 break
-            if keyvalue == 3:
+            if keyvalue == 3:                              # Extension
                 LCD.lcd_clear()
                 LCD.lcd_display_string("Scan RFID",1)
                 RFID = read_rfid()
                
                 if RFID == True:
                     buzzer_beep()
-                    new_due_date = book_extend(filtered_info,due_date) 
-                    update_due_date(filtered_info,new_due_date)
-                    deduct_fines(filtered_info, overdue_fines_due,extension_cost=1.05)
-    elif fine_status == 1 and book_extend_viability(filtered_info,due_date) == True:
+                    book_extention(filtered_info,due_date,overdue_fines_due)
+
+    elif fine_status == 1 and book_extend_viability(filtered_info,due_date) == False:
         while True:
                 LCD.lcd_display_string("You have Fines due",1)
                 LCD.lcd_display_string("Extension Available",2)
