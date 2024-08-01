@@ -277,7 +277,7 @@ def deduct_fines(fines_due, extension_cost):
     message = "$" + str(fines_deducted)
     LCD.lcd_display_string("Fine Deduction:",1)
     LCD.lcd_display_string(str(message),2)
-    # return new_balance
+    return fines_deducted
 
 #########################################
 # Updates the information of the borrowed books inside of reserveList.csv
@@ -327,7 +327,7 @@ def fine_system():
     
     if fine_status == 1 and extension_viability == True:
         while True:
-            LCD.lcd_display_string("You have Fines due",1)
+            LCD.lcd_display_string("You have Fines ",1)
             LCD.lcd_display_string("Extension Available",2)
             time.sleep(5)
             LCD.lcd_clear()
@@ -366,7 +366,7 @@ def fine_system():
 
     elif fine_status == 1 and book_extend_viability(filtered_info,due_date) == False:
         while True:
-                LCD.lcd_display_string("You have Fines due",1)
+                LCD.lcd_display_string("You have Fines",1)
                 LCD.lcd_display_string("Extension Available",2)
                 time.sleep(5)
                 LCD.lcd_display_string("1.Pay Fines",1)
