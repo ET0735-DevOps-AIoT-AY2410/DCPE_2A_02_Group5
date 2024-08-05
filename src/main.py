@@ -30,28 +30,23 @@ LCD = LCD.lcd()
 response = requests.get(url)
 response.raise_for_status()  # Raise an exception for HTTP errors
 return response.text
-
 reader = csv.DictReader(StringIO(csv_str))
 return [row for row in reader]
-
 url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
 AccountInfo_csv = fetch_csv_data(url)
 AccountInfo = csv_to_dict(csv_data)
-
 ################################################################################
-
 response = requests.get(url)
 response.raise_for_status()  # Raise an exception for HTTP errors
 return response.text
-
 reader = csv.DictReader(StringIO(csv_str))
 return [row for row in reader]
-
 url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
 Loan_Info_csv = fetch_csv_data(url)
 Loan_Info = csv_to_dict(csv_data)
 """
-
+#########################################
+# get dictionary for reserved and borrowed books
 def getList():
     global reserveList
     global borrowList
@@ -68,8 +63,6 @@ def getList():
         if borrowList != checkChangeBorrow:
             print('borrow: ',borrowList)
             checkChangeBorrow = borrowList
-
-
 """
 # Converting CSVs to dictionaries we can use
 Account_Info = 'passwords.csv'
@@ -92,7 +85,6 @@ with open(Loan_Info, mode='r', newline='') as file:
 def check_fines(account_info):
     fines = account_info.get("fines")
     return fines >= 1"""
-
 # Checks if the account is available to extend the books for 7 more days. Also ensures that the book hasn't been borrowed for more than 18 days
 """
 # Updates the new account balance after fine or extension (to main dictionary Loan_Info)
@@ -118,7 +110,8 @@ def read_rfid():
         return False
     else:
         return True  
-
+#########################################
+# servo motor turn
 def book_dispensal():
     servo.init()
     servo.set_servo_position(0)   
@@ -128,7 +121,6 @@ def book_dispensal():
 
 # Keypad stuff
 keypad_queue = queue.Queue()
-
 
 def key_pressed(key):
     keypad_queue.put(key)
@@ -146,7 +138,8 @@ def extension_filter(due_date):
             }
             number_of_extensions = len(extension_info)
     return extension_info,number_of_extensions
-
+#########################################
+# main function for extending the book due date
 def book_extention(due_date):
     extension_info, number_of_extensions = extension_filter(due_date)
     
@@ -176,13 +169,11 @@ def book_extention(due_date):
             LCD.lcd_clear()
             LCD.lcd_display_string("Exiting...",1)
             time.sleep(1)
-            
-
+        
     extension_cost = len(extension_info) * 1.05
     return extension_cost
 #####################################################################
 # Fine System and its functions
-
 #########################################
 # Filter information from borrowList
 def filter_info(account_id):
@@ -200,7 +191,6 @@ def filter_info(account_id):
             }
             filtered_borrowList.append(account_info)
     return filtered_borrowList
-
 #########################################
 # Calculates the due date into a new dictionary            
 def calculate_due_date(filtered_info):
@@ -220,10 +210,7 @@ def calculate_due_date(filtered_info):
     for item in due_date:
         if item["due_date"] < item["borrow_date"]:
             fine_status = 1
-        
-        
     return due_date, fine_status
-
 #########################################
 # Calculates the fines
 def calculate_fines(due_date):
@@ -258,7 +245,6 @@ def book_extend_viability(due_date):
     LCD.lcd_display_string("New Due Date:",1)
     LCD.lcd_display_string(str(new_due_date),2)
     return new_due_date.strftime("%Y-%m-%d")#, new_balance
-
 #########################################
 # Makes buzzer beep
 def buzzer_beep():
@@ -278,7 +264,6 @@ def deduct_fines(fines_due, extension_cost):
     LCD.lcd_display_string("Fine Deduction:",1)
     LCD.lcd_display_string(str(message),2)
     return fines_deducted
-
 #########################################
 # Updates the information of the borrowed books inside of reserveList.csv
 def update_status(account_id):
@@ -300,7 +285,7 @@ def fine_system():
     LCD.lcd_clear()
     LCD.lcd_display_string("Scan your Barcode", 1)
     filtered_info = []
-    # account_id = barcode.scan_barcode()
+    account_id = barcode.scan_barcode()
 
     # For Testing Purposes
     account_id = 123
@@ -314,7 +299,6 @@ def fine_system():
     {"id": 456, "bookId": 666, "location": "location1", "date": "2024-07-19 00:58:14"},
     {"id": 456, "bookId": 13, "location": "borrowed", "date": "2024-07-19 00:58:18"}
     ]
-
     filtered_info = filter_info(account_id)
     due_date, fine_status = calculate_due_date(filtered_info)
     overdue_fines_due = calculate_fines(due_date)
@@ -324,7 +308,6 @@ def fine_system():
     time.sleep(5)
     extension_viability = True
     fine_status = 1"""
-    
     if fine_status == 1 and extension_viability == True:
         while True:
             LCD.lcd_display_string("You have Fines ",1)
@@ -438,7 +421,6 @@ def main_system():
         location = "location2"
 
     fine_system()
-
 ############################################################################################
 # Main Function
 def main():
@@ -450,8 +432,6 @@ def main():
    # keypad_thread = threading.Thread(target=keypad_interrupt)
     main_system_thread.start()
     keypad_thread.start()
-
-
 
 if __name__ == '__main__':
     main()
