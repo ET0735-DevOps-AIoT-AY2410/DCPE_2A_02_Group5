@@ -1,14 +1,16 @@
 import time
-from picamera import PiCamera
+from picamera2 import Picamera2
 from pyzbar.pyzbar import decode
 from PIL import Image
 
-def capture_image(camera, file_path):
-    camera.start_preview()
-    # Allow the camera to warm up
-    time.sleep(2)
-    camera.capture(file_path)
-    camera.stop_preview()
+def capture_image(file_path):
+    picam2 = Picamera2()
+    config = picam2.create_still_configuration()
+    picam2.configure(config)
+    picam2.start()
+    time.sleep(2)  # Give the camera some time to adjust to lighting
+    picam2.capture_file(file_path)
+    picam2.stop()
 
 def scan_barcode(image_path):
     image = Image.open(image_path)
@@ -17,27 +19,8 @@ def scan_barcode(image_path):
         barcode_data = barcode.data.decode('utf-8')
         barcode_type = barcode.type
         print(f"Found {barcode_type} barcode: {barcode_data}")
-        return barcode_data
-    return None
-
-def main():
-    camera = PiCamera()
-    image_path = '/home/pi/barcode.jpg'
-    
-    print("Preparing to capture image...")
-    capture_image(camera, image_path)
-    
-    print("Scanning for barcodes...")
-    barcode_data = scan_barcode(image_path)
-    
-    if barcode_data:
-        print(f"Barcode data: {barcode_data}")
-        # Here, you can add code to check the barcode data against a database
-        # For demonstration, we'll just print it
-    else:
-        print("No barcode found.")
-    
-    camera.close()
 
 if __name__ == "__main__":
-    main()
+    image_path = 'barcode.jpg'
+    capture_image(image_path)
+    scan_barcode(image_path)
