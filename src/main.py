@@ -1,9 +1,10 @@
 import time
-from threading import Thread
+import threading
 import queue
 import csv
 import requests
 import getBooklist
+import barcode_scanner as barcode
 
 from datetime import datetime, date, timedelta
 
@@ -22,52 +23,47 @@ from hal import hal_usonic as usonic
 from hal import hal_dc_motor as dc_motor
 from hal import hal_accelerometer as accel
 
+LCD = LCD.lcd()
+
 # Pulling Dictionaries from Docker App
 """
 response = requests.get(url)
 response.raise_for_status()  # Raise an exception for HTTP errors
 return response.text
-
 reader = csv.DictReader(StringIO(csv_str))
 return [row for row in reader]
-
 url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
 AccountInfo_csv = fetch_csv_data(url)
 AccountInfo = csv_to_dict(csv_data)
-
 ################################################################################
-
 response = requests.get(url)
 response.raise_for_status()  # Raise an exception for HTTP errors
 return response.text
-
 reader = csv.DictReader(StringIO(csv_str))
 return [row for row in reader]
-
 url = 'http://<EXTERNAL-IP>/get_csv'  # Replace with URL from docker
 Loan_Info_csv = fetch_csv_data(url)
 Loan_Info = csv_to_dict(csv_data)
 """
-
+#########################################
+# get dictionary for reserved and borrowed books
 def getList():
-    global bookList
+    global reserveList
     global borrowList
     checkChangeReserve = {}
     checkChangeBorrow = {}
     while(True):
         data = getBooklist.getReserve()
-        bookList = data[0]
+        reserveList = data[0]
         borrowList = data[1]
 
-        if bookList != checkChangeReserve:
-            print('reserve: ', bookList)
-            checkChangeReserve = bookList
+        if reserveList != checkChangeReserve:
+            print('reserve: ', reserveList)
+            checkChangeReserve = reserveList
         if borrowList != checkChangeBorrow:
             print('borrow: ',borrowList)
             checkChangeBorrow = borrowList
-
-
-
+"""
 # Converting CSVs to dictionaries we can use
 Account_Info = 'passwords.csv'
 # Convert CSV dictionary from website into dictionary
@@ -82,123 +78,364 @@ Loan_Info = 'Loaninfo.csv'
 with open(Loan_Info, mode='r', newline='') as file:
     csv_reader = csv.DictReader(file)
     Loan_Info = [row for row in csv_reader]
-
-
-################################################################################
-# Function to Read RFID Tag
-def read_rfid():
-    RFID_Tag = rfid_reader.SimpleMFRC522()
-    return RFID_Tag
-
-# Filters the account information into another dictionary that focuses on the information for the account we are currenlty looking
-# Mainly done to connect the 2 dictionaries for Website and Hardware and also for convenience
-def filter_loan_info(Account_ID):
-    filtered_loan_info = []
-    loan_info = []
-    for item in Loan_Info:
-        if str(item["account_id"]) == str(Account_ID):
-            loan_info = {
-                "account_id": item["account_id"],
-                "name": Account_Info[item["account_id"]]["name"],
-                "account_balance": Account_Info[item["account_id"]]["balance"],
-                "due_date": item["due_date"],
-                "borrow_date": item["borrow_date"]
-            }
-            #loan_info.append(filtered_loan_info)
-            return loan_info
-    #return loan_info # loan_info in small case for the smaller dictionary focusing on one account
-    return None
-            
+"""
 # I'm not super sure if the use of datetime is correct
 # In progress but meant to check if the current date is past the due date
-def check_fines(loan_info):
-    due_date_str = loan_info.get("due_date")
-    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
-    current_date = datetime.today()
-    if current_date > due_date:
-        return True
-    else:
-        return False
-            
-# Calculates the fines             
-def calculate_fines(loan_info):
-    due_date_str = loan_info.get("due_date")
-    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
-    current_date = datetime.today()
-    days_overdue = (current_date - due_date).days
-    fines = days_overdue*0.15
-    LCD.lcd_display_string("Fines due:",1)
-    LCD.lcd_display_string(str(fines),2)
-    return fines
-
-# Deducts the fines from the account's balance
-def deduct_fines(loan_info, fines_due):
-    account_balance = loan_info.get("account_balance")
-    new_balance = account_balance - fines_due
-    LCD.lcd_display_string("New Balance",1)
-    LCD.lcd_display_string(str(new_balance),2)
-    return new_balance
-
+"""
+def check_fines(account_info):
+    fines = account_info.get("fines")
+    return fines >= 1"""
 # Checks if the account is available to extend the books for 7 more days. Also ensures that the book hasn't been borrowed for more than 18 days
-def book_extend_viability(loan_info):   
-    borrow_date_str = loan_info.get("borrow_date")
-    borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
-    due_date_str = loan_info.get("due_date")
-    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
-    if due_date > borrow_date:
-        if (due_date - borrow_date).days < 18:
-            return True
-    elif borrow_date > due_date:
-        if (borrow_date - due_date).days < 18:
-            return True
-    else:
-        return False
-
-# Extends the due date and also calcualtes the new balance after extending the book's due date
-def book_extend(loan_info):
-    account_balance = loan_info.get("account_balance")
-    new_balance = account_balance - 1.05 # 0.15 * 7 = 1.05
-    due_date_str = loan_info.get("due_date")
-    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
-    LCD.lcd_display_string("New Balance",1)
-    LCD.lcd_display_string(str(new_balance),2)
-    new_due_date = due_date + timedelta(days=7)
-    return new_due_date.strftime("%Y-%m-%d"), new_balance
-
+"""
 # Updates the new account balance after fine or extension (to main dictionary Loan_Info)
-def update_balance(loan_info,new_balance):
-    loan_info_account_id = loan_info.get("account_id")
-    for item in Loan_Info:
-        if str(item["account_id"]) == loan_info_account_id:
-            Loan_Info["balance"] == new_balance
-
+def update_balance(filtered_info,new_balance):
+    account_info_id = filtered_info.get("account_id")
+    for item in borrowList:
+        if str(item["account_id"]) == account_info_id:
+            borrowList["balance"] == new_balance
+    #return Account_Info"""
 
 # Updates the new due date after extending the due date (to main dicitonary Loan_Info)
-def update_due_date(loan_info,new_due_date):
-    loan_info_account_id = loan_info.get("account_id")
-    for item in Loan_Info:
-        if str(item["account_id"]) == loan_info_account_id:
-            Loan_Info["due_date"] == new_due_date
+"""def update_due_date(filtered_reserveList,new_due_date):
+    account_info_id = filtered_reserveList.get("account_id")
+    for item in borrowList:
+        if str(item["account_id"]) == account_info_id:
+            borrowList["due_date"] == new_due_date
+    #return Account_Info"""
+################################################################################
+#  Function to Read RFID Tag
+def read_rfid():
+    RFID_Tag = rfid_reader.SimpleMFRC522()
+    if RFID_Tag is None:
+        return False
+    else:
+        return True  
+#########################################
+# servo motor turn
+def book_dispensal():
+    servo.init()
+    servo.set_servo_position(0)   
+    servo.sleep(1)                 
+    servo.set_servo_position(180)  
+    servo.sleep(1)                
 
+# Keypad stuff
+keypad_queue = queue.Queue()
 
+def key_pressed(key):
+    keypad_queue.put(key)
+
+#####################################################################
+# Managing Book Extensions
+def extension_filter(due_date):
+    extension_info = []
+    for item in due_date:
+        if (due_date - item["borrow_date"]).days > 18:
+            extension_info = {
+            "bookID": item["bookID"],
+            "due_date": item["due_date"],
+            "borrow_date": item["borrow_date"]
+            }
+            number_of_extensions = len(extension_info)
+    return extension_info,number_of_extensions
+#########################################
+# main function for extending the book due date
+def book_extention(due_date):
+    extension_info, number_of_extensions = extension_filter(due_date)
+    
+    LCD.lcd_display_string("Available",1)
+    LCD.lcd_display_string(str(number_of_extensions),2)
+    time.sleep()
+    LCD.lcd_clear()
+    LCD.lcd_display_string("1. Extend",1)
+    LCD.lcd_display_string("2. Next",2)
+    
+    for i in range (number_of_extensions):
+        LCD.lcd_clear()
+        LCD.lcd_display_string("Book ID",1)
+        LCD.lcd_display_string(str(extension_info["bookID"]),2)
+        keyvalue = None
+        while keyvalue not in [1, 2]:
+            keyvalue= keypad_queue.get()
+
+        if keyvalue == 1:
+            extension_info[i]["due_date"] = extension_info[i]["due_date"] + timedelta(days=7)
+            LCD.lcd_clear()
+            LCD.lcd_display_string("New Due Date:",1)
+            LCD.lcd_display_string(str(extension_info[i]["due_date"]),2)
+            time.sleep(3)
+
+        elif keyvalue == 2:
+            LCD.lcd_clear()
+            LCD.lcd_display_string("Exiting...",1)
+            time.sleep(1)
+        
+    extension_cost = len(extension_info) * 1.05
+    return extension_cost
+#####################################################################
+# Fine System and its functions
+#########################################
+# Filter information from borrowList
+def filter_info(account_id):
+    global location
+    print(str(location))
+    filtered_borrowList = []
+
+    for item in borrowList:
+        if str(item["id"]) == str(account_id):
+            account_info = {
+                "id": item["id"],
+                "bookId": item["bookId"],  
+                "location": item["location"],
+                "date": item["date"],
+            }
+            filtered_borrowList.append(account_info)
+    return filtered_borrowList
+#########################################
+# Calculates the due date into a new dictionary            
+def calculate_due_date(filtered_info):
+    today_date = datetime.now().date()
+    due_date = []
+    fine_status = 0
+    
+    for item in filtered_info:
+        borrow_date_str = item["date"]
+        borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d %H:%M:%S").date()
+        due_date_value = borrow_date + timedelta(days=10)
+        due_date = {
+            "bookID": item["bookID"],
+            "due_date": due_date_value,
+            "borrow_date": item["date"]
+        }
+    for item in due_date:
+        if item["due_date"] < item["borrow_date"]:
+            fine_status = 1
+    return due_date, fine_status
+#########################################
+# Calculates the fines
+def calculate_fines(due_date):
+    days_overdue = 0
+    today_date = datetime.now().date()
+    for item in due_date:
+        days_overdue = days_overdue + (today_date - item["due_date"]).days
+        
+    fines_due = days_overdue *0.15
+    return fines_due
+#########################################
+# Checks if the books in the dictionary can be extended
+def book_extend_viability(due_date):   
+    """
+    borrow_date_str = loan_info.get("date")
+    borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d")
+    due_date_str = loan_info.get("return_date")
+    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")"""
+    for item in due_date:
+        borrow_date_str = item["borrow_date"]
+        borrow_date = datetime.strptime(borrow_date_str, "%Y-%m-%d %H:%M:%S").date()
+        if due_date > borrow_date:
+            if (due_date - borrow_date).days < 18:
+                return True
+        elif borrow_date > due_date:
+            if (borrow_date - due_date).days < 18:
+                return True
+        else:
+            return False
+        
+    new_due_date = due_date + timedelta(days=7)    # sleep(2)
+    LCD.lcd_display_string("New Due Date:",1)
+    LCD.lcd_display_string(str(new_due_date),2)
+    return new_due_date.strftime("%Y-%m-%d")#, new_balance
+#########################################
+# Makes buzzer beep
+def buzzer_beep():
+    buzzer.init()
+    buzzer.turn_on()
+    time.sleep(0.5)
+    buzzer.turn_off()
+#########################################
+# Deducts the fines from the account's balance
+def deduct_fines(fines_due, extension_cost):
+    """account_balance = account_info.get("Account_Balance")
+    new_balance = account_balance - fines_due
+    LCD.lcd_display_string("New Balance",1)
+    LCD.lcd_display_string(str(new_balance),2)"""
+    fines_deducted = fines_due + extension_cost
+    message = "$" + str(fines_deducted)
+    LCD.lcd_display_string("Fine Deduction:",1)
+    LCD.lcd_display_string(str(message),2)
+    return fines_deducted
+#########################################
+# Updates the information of the borrowed books inside of reserveList.csv
+def update_status(account_id):
+    global location
+    for item in reserveList:
+        if item['id'] == account_id and item['location'] == location:
+            item['location'] = 'borrowed'
+
+    with open('reserveList.csv', mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=csv.DictReader(file).fieldnames)
+        writer.writeheader()
+        writer.writerows(reserveList)
+#############################################
+# The main fine system
+def fine_system(): 
+    global keyvalue
+    global reserveList
+    # getList()
+    LCD.lcd_clear()
+    LCD.lcd_display_string("Scan your Barcode", 1)
+    filtered_info = []
+    account_id = barcode.scan_barcode()
+
+    # For Testing Purposes
+    account_id = 123
+    reserveList = [
+    {"id": 123, "bookId": 14, "location": "location1", "date": "2024-07-19 00:37:58"},
+    {"id": 123, "bookId": 9, "location": "location2", "date": "2024-07-19 00:57:42"},
+    {"id": 123, "bookId": 3, "location": "location2", "date": "2024-07-19 00:57:47"},
+    {"id": 123, "bookId": 14, "location": "location1", "date": "2024-07-19 00:57:52"},
+    {"id": 123, "bookId": 12, "location": "location1", "date": "2024-07-19 00:57:55"},
+    {"id": 456, "bookId": 2, "location": "borrowed", "date": "2024-07-19 00:58:08"},
+    {"id": 456, "bookId": 666, "location": "location1", "date": "2024-07-19 00:58:14"},
+    {"id": 456, "bookId": 13, "location": "borrowed", "date": "2024-07-19 00:58:18"}
+    ]
+    filtered_info = filter_info(account_id)
+    due_date, fine_status = calculate_due_date(filtered_info)
+    overdue_fines_due = calculate_fines(due_date)
+    extension_viability = book_extend_viability(filtered_info,due_date)
+    # For Testing Purposes
+    """
+    time.sleep(5)
+    extension_viability = True
+    fine_status = 1"""
+    if fine_status == 1 and extension_viability == True:
+        while True:
+            LCD.lcd_display_string("You have Fines ",1)
+            LCD.lcd_display_string("Extension Available",2)
+            time.sleep(5)
+            LCD.lcd_clear()
+            LCD.lcd_display_string("1.Pay Fines",1)
+            LCD.lcd_display_string("2.Exit",2)
+            time.sleep(2)
+            LCD.lcd_clear()
+            LCD.lcd_display_string("3.Extend Loan",1)
+
+            keyvalue = None
+            while keyvalue not in [1, 2, 3]:
+                keyvalue= keypad_queue.get()
+
+            if keyvalue == 1:                             # Pay Fines
+                LCD.lcd_clear()
+                LCD.lcd_display_string("Scan RFID",1)
+                RFID = read_rfid()
+                print(str(RFID))
+
+                if RFID == True:
+                    buzzer_beep()
+                    deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
+                    break
+            if keyvalue == 2:                              # Exit
+                
+                break
+            if keyvalue == 3:                              # Extension
+                LCD.lcd_clear()
+                LCD.lcd_display_string("Scan RFID",1)
+                RFID = read_rfid()
+               
+                if RFID == True:
+                    buzzer_beep()
+                    extension_cost = book_extention(due_date)
+                    deduct_fines(filtered_info,overdue_fines_due,extension_cost)
+
+    elif fine_status == 1 and book_extend_viability(filtered_info,due_date) == False:
+        while True:
+                LCD.lcd_display_string("You have Fines",1)
+                LCD.lcd_display_string("Extension Available",2)
+                time.sleep(5)
+                LCD.lcd_display_string("1.Pay Fines",1)
+                LCD.lcd_display_string("2.Exit",2)
+                time.sleep(2)
+                LCD.lcd_display_string("3.Extend Loan",1)
+
+                keyvalue = None
+                while keyvalue not in [1, 2, 3]:
+                    keyvalue= keypad_queue.get()
+
+                if keyvalue == 1:
+                    LCD.lcd_clear()
+                    LCD.lcd_display_string("Scan RFID",1)
+                    RFID = read_rfid()
+                    if RFID == True:
+                        buzzer_beep()
+                        deduct_fines(filtered_info, overdue_fines_due, extension_cost=0)
+                        break
+                if keyvalue == 2:
+                    break       
+    
+    LCD.lcd_clear()
+    LCD.lcd_display_string("1.Borrow",1)
+    LCD.lcd_display_string("2.Exit",2)
+
+    keyvalue = None
+    while keyvalue not in [1, 2]:
+        keyvalue= keypad_queue.get()
+
+    if keyvalue == 1:
+        book_dispensal()
+
+    elif keyvalue == 2:
+        LCD.lcd_clear()
+        LCD.lcd_display_string("Exiting...",1)
+        time.sleep(1)
+
+    update_status(account_id)
+"""
+def keypad_interrupt():
+    global keyvalue
+    keyvalue = keypad.get_key()
+    return keyvalue"""
+#######################################################################################
+# Main system 
+def main_system():
+    # There was some error with this function for getList()
+    getList()
+    global location
+    LCD.lcd_display_string("Select your ", 1)
+    LCD.lcd_display_string("Location",2)
+    time.sleep(2)
+
+    keyvalue = None
+    while keyvalue not in [1, 2]:
+        LCD.lcd_display_string("1.Location 1", 1)
+        LCD.lcd_display_string("2.Location 2", 2)
+        keyvalue= keypad_queue.get()
+
+    LCD.lcd_clear()
+    if keyvalue == 1:
+        LCD.lcd_display_string("Location 1", 1)
+        LCD.lcd_display_string("Selected", 2)
+        location = "location1"
+    elif keyvalue == 2:
+        LCD.lcd_display_string("Location 2", 1)
+        LCD.lcd_display_string("Selected", 2)
+        location = "location2"
+
+    fine_system()
+############################################################################################
 # Main Function
 def main():
-    RFID = read_rfid()
-    loan_info = filter_loan_info(RFID)
-    if check_fines() == True:
-        fines_due = calculate_fines(loan_info)
-        if (keypad == 1):
-            new_balance = deduct_fines(loan_info, fines_due)
-            update_balance(loan_info, new_balance)
-        if (keypad == 2):
-            if book_extend_viability(loan_info) == True:
-                new_due_date, new_balance = book_extend(loan_info)
-                update_due_date(loan_info,new_due_date) #Changes the new due date
-                update_balance(loan_info, new_balance)
 
+    keypad.init(key_pressed)
+    keypad_thread = threading.Thread(target=keypad.get_key)
 
-if __name__ == '_main_':
+    main_system_thread = threading.Thread(target=main_system)
+   # keypad_thread = threading.Thread(target=keypad_interrupt)
+    main_system_thread.start()
+    keypad_thread.start()
+
+if __name__ == '__main__':
     main()
+
 
 
 ################################################################################
