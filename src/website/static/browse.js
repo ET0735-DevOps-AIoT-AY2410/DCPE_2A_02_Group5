@@ -11,7 +11,7 @@ const genreFilter = document.getElementById('genreFilter');
 const authorFilter = document.getElementById('authorFilter');
 const availabilityFilter = document.getElementById('availabilityFilter');
 
-const ip = 'http://127.0.0.1:5000'
+
 
 // Function to display books in the grid
 function displayBooks(books) {

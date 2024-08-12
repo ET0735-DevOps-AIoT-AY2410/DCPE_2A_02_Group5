@@ -11,7 +11,7 @@ const books = [
     },
     {
         bookId: "2",
-        title: "The Hitchhiker's GubookIde to the Galaxy",
+        title: "The Hitchhiker's Guidebook to the Galaxy",
         author: "Douglas Adams",
         cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNad4-0rUdke9G4vbX9sK9KFnWd5Ul0W3Jgw&s", 
         description: "Earthman Arthur Dent narrowly escapes the destruction of his home planet by hitching a rbookIde on a Vogon spaceship with his friend Ford Prefect, who reveals himself to be an alien researcher for the titular Hitchhiker's GubookIde to the Galaxy. They embark on a zany interstellar journey aboard the stolen spaceship Heart of Gold, encountering eccentric characters like two-headed galactic presbookIdent Zaphod Beeblebrox, the depressed robot Marvin, and Trillian, the woman Arthur once tried to pick up at a party. Their adventures lead them to the answer to the ultimate question of life, the universe, and everything, which turns out to be 42, but the question itself remains elusive.", 

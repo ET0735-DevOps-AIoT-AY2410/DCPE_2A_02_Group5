@@ -94,9 +94,6 @@ def reserve():
 
     return jsonify({'success': True})
 
-
-
-
 @app.route('/reservations', methods=['GET'])
 def get_reservations():
     booklist = bookInfo.loadBooks()
@@ -116,7 +113,8 @@ def browse():
 
 @app.route('/account')
 def account():
-    return render_template('account.html')
+    reserved_books = bookInfo.loadBooks()
+    return render_template('account.html', reserved_books=reserved_books)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

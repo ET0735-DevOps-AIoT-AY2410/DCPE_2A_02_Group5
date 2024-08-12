@@ -1,6 +1,6 @@
 function logout() {
     alert("logout")
-    fetch('http://127.0.0.1:5000/logout', {
+    fetch(`${ip}/logout`, {
         method: 'POST',
     }).then(() => {
         window.location.href = '/';
@@ -8,7 +8,7 @@ function logout() {
 }
 
 function reserve(){
-    alert("reserve")
+    alert("Thank you for making a resercation")
     const formData = {
         name: document.getElementById('name').innerHTML,
         bookId: document.getElementById('detail-bookId').textContent,
@@ -19,7 +19,7 @@ function reserve(){
     };
 
     //Public IP below
-    fetch('http://127.0.0.1:5000/reserve', {
+    fetch(`${ip}/reserve`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
