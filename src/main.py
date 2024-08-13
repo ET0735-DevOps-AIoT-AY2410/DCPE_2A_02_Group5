@@ -193,7 +193,7 @@ def book_extention(due_date):
             LCD.lcd_clear()
             LCD.lcd_display_string("New Due Date:", 1)
             LCD.lcd_display_string(str(new_due_date_str), 2)
-            # update_extension(account_id,change_date)
+            update_extension(account_id,change_date)
             time.sleep(1)
 
         elif keyvalue == 2:
@@ -332,7 +332,7 @@ def fine_system():
     # account_id = barcode.readbarcode(os.path.join(os.path.dirname(__file__), 'barcode.jpg'))
 
     # For Testing Purposes
-    account_id = 123
+    account_id = '2302931'
     """borrowList = [
     {"id": 456, "bookId": 2, "location": "borrowed", "date": "2024-07-15 00:58:08"},  # 4 days borrowed (eligible)
     {"id": 456, "bookId": 13, "location": "borrowed", "date": "2024-07-10 00:58:18"}, # 9 days borrowed (eligible)
@@ -374,7 +374,7 @@ def fine_system():
                     deduct_fines(overdue_fines_due, extension_cost=0)
                     break
             if keyvalue == 2:                              # Exit
-                # update_status(account_id)
+                update_status(account_id)
                 main_system()
 
             if keyvalue == 3:                              # Extension
@@ -413,7 +413,7 @@ def fine_system():
                     LCD.lcd_clear()
                     LCD.lcd_display_string("Exiting...",1)
                     time.sleep(1)
-                    # update_status(account_id)
+                    update_status(account_id)
                     main_system()       
     
     LCD.lcd_clear()
@@ -426,14 +426,14 @@ def fine_system():
 
     if keyvalue == 1:
         book_dispensal()
-        # update_status(account_id)
+        update_status(account_id)
         main_system()
 
     elif keyvalue == 2:
         LCD.lcd_clear()
         LCD.lcd_display_string("Exiting...",1)
         time.sleep(1)
-        # update_status(account_id)
+        update_status(account_id)
         main_system() 
    
 """
