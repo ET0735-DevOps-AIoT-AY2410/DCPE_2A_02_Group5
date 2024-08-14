@@ -8,7 +8,7 @@ function logout() {
 }
 
 function reserve(){
-    alert("Thank you for making a resercation")
+    alert("Thank you for making a reservation")
     const formData = {
         name: document.getElementById('name').innerHTML,
         bookId: document.getElementById('detail-bookId').textContent,

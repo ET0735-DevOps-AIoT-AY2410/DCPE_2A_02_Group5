@@ -91,7 +91,8 @@ def getList():
 ################################################################################
 #  Function to Read RFID Tag
 def read_rfid():
-    RFID_Tag = rfid_reader.SimpleMFRC522()
+    reader = rfid_reader.init()
+    RFID_Tag = reader.read_id_no_block()
     if RFID_Tag is None:
         return False
     else:
@@ -137,20 +138,18 @@ def extension_filter(due_date):
     print(str(extension_info))
     return extension_info,number_of_extensions
 
-def update_extension(account_id, new_due_date):
+def update_extension(account_id, new_due_date_str):
     global location
 
     current_dir = os.getcwd()  # This will get the current working directory
-    file_path = os.path.join(current_dir, 'website', 'reserveList.csv')
+    file_path = os.path.join(current_dir, 'src', 'website', 'reserveList.csv')
 
     with open(file_path, mode='r', newline='') as file:
         reader = csv.DictReader(file)
         tempList = list(reader)
 
-    new_due_date_str = new_due_date.strftime("%Y-%m-%d %H:%M:%S")
-
     for item in tempList:
-        if item['id'] == account_id and item['location'] == location:
+        if item['id'] == account_id and item['location'] == 'borrowed':
             item['date'] = new_due_date_str
     print('==========================================\n')
     print(tempList)
@@ -190,11 +189,10 @@ def book_extention(due_date):
             new_due_date = current_due_date + timedelta(days=7)
             new_due_date_str = new_due_date.strftime("%Y-%m-%d %H:%M:%S")
             extension_info[i]["due_date"] = new_due_date_str
-            change_date = new_due_date - timedelta(days=10)
             LCD.lcd_clear()
             LCD.lcd_display_string("New Due Date:", 1)
             LCD.lcd_display_string(str(new_due_date_str), 2)
-            update_extension(account_id,change_date)
+            update_extension(account_id,new_due_date_str)
             time.sleep(1)
 
         elif keyvalue == 2:
@@ -303,7 +301,7 @@ def update_status(account_id):
     global reserveList
 
     current_dir = os.getcwd()  # This will get the current working directory
-    file_path = os.path.join(current_dir, 'website', 'reserveList.csv')
+    file_path = os.path.join(current_dir, 'src', 'website', 'reserveList.csv')
 
     with open(file_path, mode='r', newline='') as file:
         reader = csv.DictReader(file)
@@ -330,7 +328,7 @@ def fine_system():
     LCD.lcd_display_string("Scan your Barcode", 1)
     time.sleep(5)
     extension_viability = False
-    account_id = barcode.read_barcode(os.path.join(os.getcwd(), 'barcode.jpg'))
+    account_id = barcode.read_barcode(os.path.join(os.getcwd(), 'src/barcode.jpg'))
     print(account_id)
 
     # For Testing Purposes
@@ -348,7 +346,7 @@ def fine_system():
     overdue_fines_due = calculate_fines(due_date)
     extension_viability = book_extend_viability(due_date)
 
-    if fine_status == 1 and extension_viability == True:
+    if fine_status == 1 or extension_viability == True:
         while True:
             LCD.lcd_clear()
             LCD.lcd_display_string("You have Fines ",1)
@@ -468,15 +466,21 @@ def main_system():
         location = "location2"
 
     fine_system()
+
+def website():
+    os.system('python src/website/website.py')
+
+
 ############################################################################################
 # Main Function
 def main():
-
+    website_thread = threading.Thread(target=website)
     keypad.init(key_pressed)
     keypad_thread = threading.Thread(target=keypad.get_key)
     getList_thread = threading.Thread(target=getList)
     main_system_thread = threading.Thread(target=main_system)
 
+    website_thread.start()
     getList_thread.start()
     main_system_thread.start()
     keypad_thread.start()
