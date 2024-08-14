@@ -193,7 +193,7 @@ def book_extention(due_date):
             LCD.lcd_clear()
             LCD.lcd_display_string("New Due Date:", 1)
             LCD.lcd_display_string(str(new_due_date_str), 2)
-            # update_extension(account_id,change_date)
+            update_extension(account_id,change_date)
             time.sleep(1)
 
         elif keyvalue == 2:
@@ -374,7 +374,7 @@ def fine_system():
                     deduct_fines(overdue_fines_due, extension_cost=0)
                     break
             if keyvalue == 2:                              # Exit
-                # update_status(account_id)
+                update_status(account_id)
                 main_system()
 
             if keyvalue == 3:                              # Extension
