@@ -139,26 +139,27 @@ def extension_filter(due_date):
 
 def update_extension(account_id, new_due_date):
     global location
-    global reserveList
 
     current_dir = os.getcwd()  # This will get the current working directory
     file_path = os.path.join(current_dir, 'website', 'reserveList.csv')
 
     with open(file_path, mode='r', newline='') as file:
         reader = csv.DictReader(file)
-        reserveList = list(reader)
+        tempList = list(reader)
 
     new_due_date_str = new_due_date.strftime("%Y-%m-%d %H:%M:%S")
 
-    for item in reserveList:
+    for item in tempList:
         if item['id'] == account_id and item['location'] == location:
             item['date'] = new_due_date_str
-
+    print('==========================================\n')
+    print(tempList)
+    print('==========================================\n')
     with open(file_path, mode='w', newline='') as file:
         fieldnames = ['id', 'bookId', 'location', 'date']  
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(reserveList)
+        writer.writerows(tempList)
 
 #########################################
 # main function for extending the book due date
@@ -329,10 +330,11 @@ def fine_system():
     LCD.lcd_display_string("Scan your Barcode", 1)
     time.sleep(5)
     extension_viability = False
-    # account_id = barcode.readbarcode(os.path.join(os.path.dirname(__file__), 'barcode.jpg'))
+    account_id = barcode.read_barcode(os.path.join(os.getcwd(), 'barcode.jpg'))
+    print(account_id)
 
     # For Testing Purposes
-    account_id = 123
+    # account_id = '2302931'
     """borrowList = [
     {"id": 456, "bookId": 2, "location": "borrowed", "date": "2024-07-15 00:58:08"},  # 4 days borrowed (eligible)
     {"id": 456, "bookId": 13, "location": "borrowed", "date": "2024-07-10 00:58:18"}, # 9 days borrowed (eligible)
@@ -413,7 +415,7 @@ def fine_system():
                     LCD.lcd_clear()
                     LCD.lcd_display_string("Exiting...",1)
                     time.sleep(1)
-                    # update_status(account_id)
+                    update_status(account_id)
                     main_system()       
     
     LCD.lcd_clear()
@@ -426,14 +428,14 @@ def fine_system():
 
     if keyvalue == 1:
         book_dispensal()
-        # update_status(account_id)
+        update_status(account_id)
         main_system()
 
     elif keyvalue == 2:
         LCD.lcd_clear()
         LCD.lcd_display_string("Exiting...",1)
         time.sleep(1)
-        # update_status(account_id)
+        update_status(account_id)
         main_system() 
    
 """
