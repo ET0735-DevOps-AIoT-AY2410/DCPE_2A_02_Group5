@@ -1,0 +1,7 @@
+Flask==3.0.3
+Flask_Cors==4.0.1
+Pillow==10.4.0
+pyzbar==0.1.9
+requests==2.25.1
+spi==0.2.0
+spidev==3.5
