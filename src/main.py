@@ -201,7 +201,7 @@ def book_extention(due_date):
             continue
         
     extension_cost = i * 1.05
-    return 1.05
+    return extension_cost
 #####################################################################
 # Fine System and its functions
 #########################################
