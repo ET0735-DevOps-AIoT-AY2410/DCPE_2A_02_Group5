@@ -201,7 +201,7 @@ def book_extention(due_date):
             continue
         
     extension_cost = i * 1.05
-    return 1.05
+    return extension_cost
 #####################################################################
 # Fine System and its functions
 #########################################
@@ -291,10 +291,8 @@ def buzzer_beep():
 def deduct_fines(fines_due, extension_cost):
     fines_deducted = fines_due + extension_cost
     message = "${:.2f}".format(fines_deducted)
-    LCD.lcd_clear()
     LCD.lcd_display_string("Fine Deduction:",1)
     LCD.lcd_display_string(str(message),2)
-    time.sleep(2)
     return fines_deducted
 #########################################
 # Updates the information of the borrowed books inside of reserveList.csv
@@ -315,6 +313,7 @@ def update_status(account_id):
 
     with open(file_path, mode='w', newline='') as file:
         fieldnames = ['id', 'bookId', 'location', 'date']  
+
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(reserveList)
