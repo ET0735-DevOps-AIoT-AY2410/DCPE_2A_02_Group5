@@ -329,7 +329,12 @@ def fine_system():
     time.sleep(5)
     extension_viability = False
     account_id = barcode.read_barcode(os.path.join(os.getcwd(), 'src/barcode.jpg'))
+    if account_id == None:
+        LCD.lcd_clear()
+        LCD.lcd_display_string("Scan again", 1)
+        
     print(account_id)
+    
 
     # For Testing Purposes
     # account_id = '2302931'
